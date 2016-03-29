@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OPR.lb1
 {
@@ -29,26 +31,35 @@ namespace OPR.lb1
 
             SquarePoint stPoint = startPoint;
             int iteration = 0;
+            float sl = this.sideLength;
             do
             {
                 var square = iteration == 0
-                    ? Square.GeneratePointsFromLeftCorner(stPoint, sideLength, innerPointsCount)
-                    : Square.GeneratePointsFromCenter(stPoint, sideLength, innerPointsCount);
-                // test this query
-                // test this algoritm :)
-                stPoint = square.InnerPoints
-                    .Select(x => new { point = x, fn = Function(x.x, x.y) })
-                    .OrderBy(x => x.fn)
+                    ? Square.GeneratePointsFromLeftCorner(stPoint, sl, innerPointsCount)
+                    : Square.GeneratePointsFromCenter(stPoint, sl, innerPointsCount);
+
+                var stPoints = square.InnerPoints
+                    .Select(x => new { point = x, result = multiplicationCoord(x.x, x.y) })
+                    .OrderBy(x => x.result).ToList();
+                stPoint = stPoints
                     .First().point;
+
+                Console.WriteLine("\nBest point on {0} iteration :", iteration);
+                Console.WriteLine("x " + stPoint.x);
+                Console.WriteLine("y " + stPoint.y);
+                Console.WriteLine("z " + multiplicationCoord(stPoint.x, stPoint.y));
+                Console.WriteLine("sideLength " + sl / this.deltaSideLength);
                 ++iteration;
-            } while (iteration < this.iterationCount);
+                sl = sl / this.deltaSideLength;
+            } while (iteration < this.iterationCount /*&& sl >= minSideLength*/);
 
             return stPoint;
         }
 
-        private float Function(float x, float y)
+        private float multiplicationCoord(float x, float y)
         {
-            return x + y;
+            return (float)(100 * Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
+            //return (float)(Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
         }
     }
 }
