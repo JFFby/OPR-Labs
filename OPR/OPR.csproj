@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KP\MKT.cs" />
+    <Compile Include="KP\MKT_Items\RandomGenerator.cs" />
+    <Compile Include="KP\MKT_Items\Shlp_HyperCube.cs" />
     <Compile Include="lb1\HyperCube.cs" />
     <Compile Include="lb1\Point.cs" />
     <Compile Include="lb2\BinaryEntity.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="lb1\Square.cs" />
     <Compile Include="lb2\RandomHelper.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

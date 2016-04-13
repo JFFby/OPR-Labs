@@ -2,8 +2,8 @@
 
 namespace OPR.lb2.Interfaces.Common
 {
-    public interface IGenerator
+    public interface IGenerator<T>
     {
-        IList<T> Generate<T>(int count);
+        IList<T> Generate(int count, object state);
     }
 }

@@ -5,6 +5,13 @@
         public T x, y;
         public int Number;
 
+        public Point()
+        {
+            this.x = default(T);
+            this.y = default(T);
+            Number = 0;
+        }
+
         public Point(T x, T y)
         {
             this.x = x;
@@ -20,6 +27,12 @@
 
     public class SquarePoint : Point<float>
     {
+        public SquarePoint()
+        {
+            x = default(float);
+            y = default(float);
+        }
+
         public SquarePoint(float x, float y, int number) : base(x, y, number) { }
 
         public SquarePoint(float x, float y) : base(x, y) { }

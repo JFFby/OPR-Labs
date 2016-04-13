@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace OPR.lb1
 {
-    public sealed class HyperCube
+    public class HyperCube
     {
         private readonly SquarePoint startPoint;
         private readonly float sideLength, iterationCount, minSideLength, deltaSideLength;
         private readonly int innerPointsCount;
+        private readonly bool isDebugMode;
 
         public HyperCube(
             SquarePoint startpoint,
@@ -16,7 +16,8 @@ namespace OPR.lb1
             float minSideLength,
             float deltaSideLenth,
             int iterationCount,
-            int innerPointsCount)
+            int innerPointsCount,
+            bool isDebugMode = false)
         {
             this.deltaSideLength = deltaSideLenth;
             this.startPoint = startpoint;
@@ -24,6 +25,7 @@ namespace OPR.lb1
             this.iterationCount = iterationCount;
             this.minSideLength = minSideLength;
             this.innerPointsCount = innerPointsCount;
+            this.isDebugMode = isDebugMode;
         }
 
         public SquarePoint Calculate()
@@ -39,16 +41,20 @@ namespace OPR.lb1
                     : Square.GeneratePointsFromCenter(stPoint, sl, innerPointsCount);
 
                 var stPoints = square.InnerPoints
-                    .Select(x => new { point = x, result = multiplicationCoord(x.x, x.y) })
+                    .Select(x => new { point = x, result = MultiplicationCoord(x.x, x.y) })
                     .OrderBy(x => x.result).ToList();
                 stPoint = stPoints
                     .First().point;
 
-                Console.WriteLine("\nBest point on {0} iteration :", iteration);
-                Console.WriteLine("x " + stPoint.x);
-                Console.WriteLine("y " + stPoint.y);
-                Console.WriteLine("z " + multiplicationCoord(stPoint.x, stPoint.y));
-                Console.WriteLine("sideLength " + sl / this.deltaSideLength);
+                if (isDebugMode)
+                {
+                    Console.WriteLine("\nBest point on {0} iteration :", iteration);
+                    Console.WriteLine("x " + stPoint.x);
+                    Console.WriteLine("y " + stPoint.y);
+                    Console.WriteLine("z " + MultiplicationCoord(stPoint.x, stPoint.y));
+                    Console.WriteLine("sideLength " + sl / this.deltaSideLength);
+                }
+
                 ++iteration;
                 sl = sl / this.deltaSideLength;
             } while (iteration < this.iterationCount /*&& sl >= minSideLength*/);
@@ -56,7 +62,7 @@ namespace OPR.lb1
             return stPoint;
         }
 
-        private float multiplicationCoord(float x, float y)
+        protected virtual float MultiplicationCoord(float x, float y)
         {
             return (float)(100 * Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
             //return (float)(Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
