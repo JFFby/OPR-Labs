@@ -50,6 +50,8 @@
     <Compile Include="lb2\Enums\EntityFunction.cs" />
     <Compile Include="lb2\Enums\EntityType.cs" />
     <Compile Include="lb2\Generation.cs" />
+    <Compile Include="lb2\Interfaces\Common\IGenerator.cs" />
+    <Compile Include="lb2\Interfaces\Common\ISeparator.cs" />
     <Compile Include="lb2\Interfaces\IGenom.cs" />
     <Compile Include="lb2\SSGA.cs" />
     <Compile Include="lb2\Сhromosome.cs" />
