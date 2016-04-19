@@ -31,7 +31,7 @@ namespace OPR.lb1
 
         public IList<SquarePoint> InnerPoints { get; private set; }
 
-        public static Square GeneratePointsFromLeftCorner(SquarePoint startPoint, float sideLength, int innerpointsCount)
+        public static Square GeneratePointsFromLeftCorner(SquarePoint startPoint, float sideLength, int innerpointsCount, SquarePoint[] bounds)
         {
             startPoint.Number = 1;
             var points = new List<SquarePoint> { startPoint };
@@ -40,12 +40,12 @@ namespace OPR.lb1
             points.Add(new SquarePoint(startPoint.x + sideLength, startPoint.y, 4));
             var square = new Square(startPoint, sideLength) { BoundPoints = points };
            /* square.log(square.BoundPoints);*/
-            square.CreateInnerPoints(innerpointsCount);
+            square.CreateInnerPoints(innerpointsCount, bounds);
 
             return square;
         }
 
-        public static Square GeneratePointsFromCenter(SquarePoint startPoint, float sideLength, int innerpointsCount)
+        public static Square GeneratePointsFromCenter(SquarePoint startPoint, float sideLength, int innerpointsCount, SquarePoint[] bounds)
         {
             startPoint.Number = 1;
             var points = new List<SquarePoint>();
@@ -56,20 +56,20 @@ namespace OPR.lb1
 
             var square = new Square(startPoint, sideLength) { BoundPoints = points };
             /*square.log(square.BoundPoints);*/
-            square.CreateInnerPoints(innerpointsCount);
+            square.CreateInnerPoints(innerpointsCount, bounds);
             return square;
         }
 
-        public void CreateInnerPoints(int innerpointsCount)
+        public void CreateInnerPoints(int innerpointsCount, SquarePoint[] bounds)
         {
             var s  = this.BoundPoints;
             var points = new List<SquarePoint>();
             var point3 = this.BoundPoints.Single(x => x.Number == 3);
-            var maxX = point3.x;
-            var maxY = point3.y;
+            var maxX = Math.Min(point3.x, bounds[1].x);
+            var maxY = Math.Min(point3.y, bounds[1].y);
             var point1 = this.BoundPoints.Single(x => x.Number == 1);
-            var minX = point1.x;
-            var minY = point1.y;
+            var minX = Math.Max(point1.x, bounds[0].x);
+            var minY = Math.Max(point1.y, bounds[0].y);
             var rnd = new Random(DateTime.Now.GetHashCode());
             for (int i = 0; i < innerpointsCount; i++)
             {

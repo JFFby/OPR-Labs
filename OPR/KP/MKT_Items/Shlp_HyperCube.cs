@@ -5,22 +5,22 @@ namespace OPR.KP.MKT_Items
 {
     public sealed class ShlpHyperCube : HyperCube
     {
-        private readonly Func<float, float, float> fn;
+        public readonly Func<float, float, float> fn;
 
         public ShlpHyperCube(
             SquarePoint startpoint,
             float sideLength,
-            float minSideLength,
             float deltaSideLenth,
             int iterationCount,
             int innerPointsCount,
+            SquarePoint[] bounds,
             Func<float, float, float> fn,
             bool isDebugMode = false) : base(startpoint,
                 sideLength,
-                minSideLength,
                 deltaSideLenth,
                 iterationCount,
                 innerPointsCount,
+                bounds,
                 isDebugMode)
         {
             this.fn = fn;

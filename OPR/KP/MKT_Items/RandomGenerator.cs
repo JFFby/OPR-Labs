@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using OPR.lb1;
 using OPR.lb2;
 using OPR.lb2.Interfaces.Common;
 
 namespace OPR.KP.MKT_Items
 {
-    public sealed class RandomGenerator : IGenerator<SquarePoint>
+    public sealed class RandomGenerator : IGenerator<MKT_Point>
     {
-        public IList<SquarePoint> Generate(int count, object state)
+        public IList<MKT_Point> Generate(int count, object state)
         {
             var bounds = GetBounds(state);
-            var points = new List<SquarePoint>();
+            var points = new List<MKT_Point>();
             for (int i = 0; i < count; ++i)
             {
-                points.Add(new SquarePoint(
-                    RandomHelper.RandomFloat(bounds[0].x, bounds[1].x),
-                     RandomHelper.RandomFloat(bounds[0].y, bounds[1].y)));
+                points.Add(new MKT_Point(
+                    RandomHelper.RandomFloat(bounds.Bounds[0].x, bounds.Bounds[1].x),
+                     RandomHelper.RandomFloat(bounds.Bounds[0].y, bounds.Bounds[1].y),
+                     bounds.fn));
             }
 
             return points;
         }
 
-        private SquarePoint[] GetBounds(object state)
+        private Genereate_MKT_Point_Arg GetBounds(object state)
         {
-            var bounds = state as SquarePoint [];
-            if (bounds == null || bounds.Length != 2)
+            var bounds = state as Genereate_MKT_Point_Arg;
+            if (bounds == null || bounds.Bounds.Length != 2)
             {
                 throw new ArgumentException("state");
             }

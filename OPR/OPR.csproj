@@ -42,8 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KP\MKT.cs" />
+    <Compile Include="KP\MKT_Items\BestSeparator.cs" />
+    <Compile Include="KP\MKT_Items\Genereate_MKT_Point_Arg.cs" />
+    <Compile Include="KP\MKT_Items\MKT_Point.cs" />
     <Compile Include="KP\MKT_Items\RandomGenerator.cs" />
+    <Compile Include="KP\MKT_Items\ShlpHyperCubeConfig.cs" />
     <Compile Include="KP\MKT_Items\Shlp_HyperCube.cs" />
+    <Compile Include="KP\Shlp\IShlp.cs" />
+    <Compile Include="KP\Shlp\NelderMid\NelderMid.cs" />
     <Compile Include="lb1\HyperCube.cs" />
     <Compile Include="lb1\Point.cs" />
     <Compile Include="lb2\BinaryEntity.cs" />

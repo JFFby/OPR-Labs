@@ -1,31 +1,33 @@
 ﻿using System;
 using System.Linq;
+using OPR.KP.Shlp;
 
 namespace OPR.lb1
 {
-    public class HyperCube
+    public class HyperCube : IShlp
     {
-        private readonly SquarePoint startPoint;
-        private readonly float sideLength, iterationCount, minSideLength, deltaSideLength;
+        protected readonly SquarePoint startPoint;
+        private readonly float sideLength, iterationCount, deltaSideLength;
         private readonly int innerPointsCount;
         private readonly bool isDebugMode;
+        private readonly SquarePoint[] bounds;
 
         public HyperCube(
             SquarePoint startpoint,
             float sideLength,
-            float minSideLength,
             float deltaSideLenth,
             int iterationCount,
             int innerPointsCount,
+            SquarePoint[] bounds,
             bool isDebugMode = false)
         {
             this.deltaSideLength = deltaSideLenth;
             this.startPoint = startpoint;
             this.sideLength = sideLength;
             this.iterationCount = iterationCount;
-            this.minSideLength = minSideLength;
             this.innerPointsCount = innerPointsCount;
             this.isDebugMode = isDebugMode;
+            this.bounds = bounds;
         }
 
         public SquarePoint Calculate()
@@ -37,8 +39,8 @@ namespace OPR.lb1
             do
             {
                 var square = iteration == 0
-                    ? Square.GeneratePointsFromLeftCorner(stPoint, sl, innerPointsCount)
-                    : Square.GeneratePointsFromCenter(stPoint, sl, innerPointsCount);
+                    ? Square.GeneratePointsFromLeftCorner(stPoint, sl, innerPointsCount, bounds)
+                    : Square.GeneratePointsFromCenter(stPoint, sl, innerPointsCount, bounds);
 
                 var stPoints = square.InnerPoints
                     .Select(x => new { point = x, result = MultiplicationCoord(x.x, x.y) })
@@ -57,7 +59,7 @@ namespace OPR.lb1
 
                 ++iteration;
                 sl = sl / this.deltaSideLength;
-            } while (iteration < this.iterationCount /*&& sl >= minSideLength*/);
+            } while (iteration < this.iterationCount);
 
             return stPoint;
         }
@@ -65,7 +67,6 @@ namespace OPR.lb1
         protected virtual float MultiplicationCoord(float x, float y)
         {
             return (float)(100 * Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
-            //return (float)(Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
         }
     }
 }
