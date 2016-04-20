@@ -44,6 +44,7 @@
     <Compile Include="KP\MKT.cs" />
     <Compile Include="KP\MKT_Items\BestSeparator.cs" />
     <Compile Include="KP\MKT_Items\Genereate_MKT_Point_Arg.cs" />
+    <Compile Include="KP\MKT_Items\MktStepEntities.cs" />
     <Compile Include="KP\MKT_Items\MKT_Point.cs" />
     <Compile Include="KP\MKT_Items\RandomGenerator.cs" />
     <Compile Include="KP\MKT_Items\ShlpHyperCubeConfig.cs" />

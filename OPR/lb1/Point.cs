@@ -3,6 +3,7 @@
     public class Point<T>
     {
         public T x, y;
+
         public int Number;
 
         public Point()

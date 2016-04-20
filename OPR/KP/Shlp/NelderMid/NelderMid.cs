@@ -98,7 +98,8 @@ namespace OPR.KP.Shlp.NelderMid
 
             } while (OneMoreIteration());
 
-            return _points.First(x => Math.Abs(x.Value - _points.Min(c => c.Value)) < 0.01);
+            return _points.Where(x => x.x <= bounds[1].x && x.x >= bounds[0].x && x.y >= bounds[0].y && x.y <= bounds[1].y)
+                .First(x => Math.Abs(x.Value - _points.Min(c => c.Value)) < 0.01);
         }
 
         private bool OneMoreIteration()

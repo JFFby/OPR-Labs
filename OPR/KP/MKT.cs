@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using OPR.KP.MKT_Items;
 using OPR.lb1;
 using OPR.lb2;
@@ -20,6 +20,11 @@ namespace OPR.KP
         private int N;
         private int n;
         private byte lambda;
+
+        private IList<MKT_Point> topPointsForNextIteration; 
+
+        public EventHandler OnEnd { get; set; }
+        public EventHandler OnStep { get; set; }
 
         public MKT(
             ShlpHyperCubeConfig hyperCubeConfig,
@@ -47,37 +52,73 @@ namespace OPR.KP
             return Iteration(initialPoints);
         }
 
+        public MktStepEntities Step()
+        {
+            var points = topPointsForNextIteration ?? GeneratePoints(N);
+            var entities = GenreateEntitesForThisStep(points);
+            topPointsForNextIteration = entities.TopPoints;
+
+            if (++currentIteration == iterations && OnEnd != null)
+            {
+                var bestPoint = separator.Separate(entities.TopPoints, 1, true, hyperCubeConfig.Fn).First();
+                OnEnd(bestPoint, new EventArgs());
+            }
+
+            if (OnStep != null)
+            {
+                OnStep(this, entities);
+            }
+
+            return entities;
+        }
+
         private MKT_Point Iteration(IList<MKT_Point> points)
+        {
+            var entities = GenreateEntitesForThisStep(points);
+            if (++currentIteration < iterations)
+            {
+                Iteration(entities.TopPoints);
+            }
+
+            return separator.Separate(entities.TopPoints, 1, true, hyperCubeConfig.Fn).First();
+        }
+
+        private MktStepEntities GenreateEntitesForThisStep(IList<MKT_Point> points)
         {
             var best = separator.Separate(points, n, true, hyperCubeConfig.Fn);
             var worst = separator.Separate(points, 1, false, hyperCubeConfig.Fn).First();
             var shpFromBestPoints = best.Select(Shlp);
-            var additionalPoints = GenerateAndProcessAdditionalPoints(worst);
+            var lambdaPoints = GeneratePoints(lambda);
+            var additionalPoints = ShlpFromLambdaPoints(lambdaPoints, worst);
             var topPoints = separator.Separate(shpFromBestPoints
                 .Union(additionalPoints)
                 .ToList(),
                 n,
                 true,
                 hyperCubeConfig.Fn);
-            if (++currentIteration < iterations)
-            {
-                Iteration(topPoints);
-            }
 
-            return separator.Separate(topPoints, 1, true, hyperCubeConfig.Fn).First();
+            return  new MktStepEntities
+            {
+                BestFromStart = best,
+                LambdaPoints = lambdaPoints,
+                ShlpFromBest = shpFromBestPoints.ToList(),
+                ShlpFromLambda = additionalPoints,
+                StartPoints = points,
+                WorstPoint = worst,
+                TopPoints = topPoints
+            };
         }
 
-        private IList<MKT_Point> GenerateAndProcessAdditionalPoints(MKT_Point worstPoint)
+        private IList<MKT_Point> ShlpFromLambdaPoints(IList<MKT_Point> points, MKT_Point worstPoint)
         {
-            var points = GeneratePoints(lambda);
-            var suitablePoints = new List<MKT_Point>();
+           var suitablePoints = new List<MKT_Point>();
             var watch2 = Stopwatch.StartNew();
-            foreach (var mktPoint in points) //Test with parrallel
+            foreach (var mktPoint in points)
             {
                 var shlpValue = Shlp(mktPoint);
-                if (shlpValue.Value > worstPoint.Value)
+                if (shlpValue.Value < worstPoint.Value)
                 {
-                    suitablePoints.Add(mktPoint);
+                    suitablePoints.Add(shlpValue);
                 }
             }
 

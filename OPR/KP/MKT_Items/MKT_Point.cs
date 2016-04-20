@@ -13,13 +13,15 @@ namespace OPR.KP.MKT_Items
         public MKT_Point(float x, float y, Func<float, float, float> _fn) : base(x, y)
         {
             this._fn = _fn;
-            Number = id++;
+            Id = ++id;
         }
 
         public MKT_Point(float x, float y, MKT_Point shlpFrPoint) : this(x, y, shlpFrPoint._fn)
         {
             ShlpFrom = shlpFrPoint;
         }
+        
+        public int Id { get; }
 
         public MKT_Point ShlpFrom { get; }
 
