@@ -6,27 +6,6 @@ namespace OPR.lb1
 {
     public sealed class Square
     {
-        private SquarePoint startPoint;
-        private float sideLength;
-
-        private Square(SquarePoint startPoint, float sideLength)
-        {
-            this.startPoint = startPoint;
-            this.sideLength = sideLength;
-        }
-
-      /*  private void log(IList<SquarePoint> points )
-        {
-            Console.WriteLine("\nSquare :");
-            foreach (SquarePoint value in points)
-            {
-                Console.WriteLine("Number " + value.Number);
-                Console.WriteLine("x " + value.x);
-                Console.WriteLine("y " + value.y);
-            }
-            Console.WriteLine("---------");
-        }
-       */        
         public IList<SquarePoint> BoundPoints { get; private set; }
 
         public IList<SquarePoint> InnerPoints { get; private set; }
@@ -38,8 +17,7 @@ namespace OPR.lb1
             points.Add(new SquarePoint(startPoint.x, startPoint.y + sideLength, 2));
             points.Add(new SquarePoint(startPoint.x + sideLength, startPoint.y + sideLength, 3));
             points.Add(new SquarePoint(startPoint.x + sideLength, startPoint.y, 4));
-            var square = new Square(startPoint, sideLength) { BoundPoints = points };
-           /* square.log(square.BoundPoints);*/
+            var square = new Square { BoundPoints = points };
             square.CreateInnerPoints(innerpointsCount, bounds);
 
             return square;
@@ -54,15 +32,13 @@ namespace OPR.lb1
             points.Add(new SquarePoint(startPoint.x + sideLength, startPoint.y + sideLength, 3));
             points.Add(new SquarePoint(startPoint.x + sideLength, startPoint.y - sideLength, 4));
 
-            var square = new Square(startPoint, sideLength) { BoundPoints = points };
-            /*square.log(square.BoundPoints);*/
+            var square = new Square { BoundPoints = points };
             square.CreateInnerPoints(innerpointsCount, bounds);
             return square;
         }
 
         public void CreateInnerPoints(int innerpointsCount, SquarePoint[] bounds)
         {
-            var s  = this.BoundPoints;
             var points = new List<SquarePoint>();
             var point3 = this.BoundPoints.Single(x => x.Number == 3);
             var maxX = Math.Min(point3.x, bounds[1].x);

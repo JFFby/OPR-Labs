@@ -14,14 +14,13 @@ namespace OPR.KP.MKT_Items
             int iterationCount,
             int innerPointsCount,
             SquarePoint[] bounds,
-            Func<float, float, float> fn,
-            bool isDebugMode = false) : base(startpoint,
+            Func<float, float, float> fn) : base(startpoint,
                 sideLength,
                 deltaSideLenth,
                 iterationCount,
                 innerPointsCount,
                 bounds,
-                isDebugMode)
+                false)
         {
             this.fn = fn;
         }

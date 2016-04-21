@@ -3,7 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using OPR.KP.MKT_Items;
+using OPR.KP.Shlp.NelderMid;
 using OPR.lb1;
+using OPR.lb2;
 
 namespace MKT.UI
 {
@@ -16,24 +18,27 @@ namespace MKT.UI
         {
             InitializeComponent();
             KeyPreview = true;
-            mkt = new OPR.KP.MKT(new ShlpHyperCubeConfig
+            var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
+            //var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds);
+            var shlp = new NelderMidWrapper(MultiplicationCoord, bounds);
+            var N_Bounds = new[] { 5, 10 };
+            var n_Bounds = new int[] { 3, 5 };
+            var config = new MKT_Config
             {
+                n = RandomHelper.Random(n_Bounds[0], n_Bounds[1]),
+                N = RandomHelper.Random(N_Bounds[0], N_Bounds[1]),
+                Bounds = bounds,
                 Fn = MultiplicationCoord,
-                DeltaSideLenth = 1.1f,
-                InnerPointsCount = 5,
-                SideLength = 1,
-                IterationCount = 15
-            },
-                new BestSeparator(),
-                new RandomGenerator(),
-                10,
-                new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), },
-                new[] { 5, 10 },
-                new int[] { 3, 5 },
-                4);
+                Shlp = shlp,
+                Generator = new RandomGenerator(),
+                Lambda = 4,
+                Iterations = 10,
+                Separator = new BestSeparator()
+            };
+
+            mkt = new OPR.KP.MKT(config);
             mkt.OnEnd += OnMKTEnd;
-            mkt.OnStep += OnStep;
-            mkt.Step();
+            Step();
         }
 
         private void OnStep(object sender, EventArgs eventArgs)
@@ -125,13 +130,19 @@ namespace MKT.UI
             //return (float)(Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
         }
 
+        private void Step()
+        {
+            var stepEntities = mkt.Step();
+            OnStep(mkt, stepEntities);
+        }
+
         private void MKT_Form_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Space)
             {
                 if (!IsEnd)
                 {
-                    mkt.Step();
+                    Step();
                 }
             }
         }

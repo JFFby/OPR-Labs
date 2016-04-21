@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using OPR.KP.MKT_Items;
+using OPR.KP.Shlp;
 using OPR.lb1;
-using OPR.lb2;
 using OPR.lb2.Interfaces.Common;
 
 namespace OPR.KP
 {
     public sealed class MKT
     {
-        private readonly ShlpHyperCubeConfig hyperCubeConfig;
+        private readonly IShlpWrapper shlpWrapper;
         private readonly ISeparator<MKT_Point> separator;
         private readonly IGenerator<MKT_Point> generator;
         private SquarePoint[] bounds;
@@ -20,30 +20,22 @@ namespace OPR.KP
         private int N;
         private int n;
         private byte lambda;
-
-        private IList<MKT_Point> topPointsForNextIteration; 
+        private Func<float, float, float> fn;
+        private IList<MKT_Point> topPointsForNextIteration;
 
         public EventHandler OnEnd { get; set; }
-        public EventHandler OnStep { get; set; }
 
-        public MKT(
-            ShlpHyperCubeConfig hyperCubeConfig,
-            ISeparator<MKT_Point> separator,
-            IGenerator<MKT_Point> generator,
-            int iterations,
-            SquarePoint[] bounds,
-            int[] N_Bounds,
-            int[] n_Bounds,
-            byte lambda)
+        public MKT(MKT_Config config)
         {
-            this.hyperCubeConfig = hyperCubeConfig;
-            this.separator = separator;
-            this.generator = generator;
-            this.iterations = iterations;
-            this.bounds = bounds;
-            this.lambda = lambda;
-            this.N = RandomHelper.Random(N_Bounds[0], N_Bounds[1]);
-            n = RandomHelper.Random(n_Bounds[0], n_Bounds[1]);
+            this.shlpWrapper = config.Shlp;
+            this.separator = config.Separator;
+            this.generator = config.Generator;
+            this.iterations = config.Iterations;
+            this.bounds = config.Bounds;
+            this.lambda = config.Lambda;
+            this.N = config.N;
+            this.n = config.n;
+            this.fn = config.Fn;
         }
 
         public MKT_Point Solve()
@@ -60,13 +52,8 @@ namespace OPR.KP
 
             if (++currentIteration == iterations && OnEnd != null)
             {
-                var bestPoint = separator.Separate(entities.TopPoints, 1, true, hyperCubeConfig.Fn).First();
+                var bestPoint = separator.Separate(entities.TopPoints, 1, true, fn).First();
                 OnEnd(bestPoint, new EventArgs());
-            }
-
-            if (OnStep != null)
-            {
-                OnStep(this, entities);
             }
 
             return entities;
@@ -80,13 +67,13 @@ namespace OPR.KP
                 Iteration(entities.TopPoints);
             }
 
-            return separator.Separate(entities.TopPoints, 1, true, hyperCubeConfig.Fn).First();
+            return separator.Separate(entities.TopPoints, 1, true, fn).First();
         }
 
         private MktStepEntities GenreateEntitesForThisStep(IList<MKT_Point> points)
         {
-            var best = separator.Separate(points, n, true, hyperCubeConfig.Fn);
-            var worst = separator.Separate(points, 1, false, hyperCubeConfig.Fn).First();
+            var best = separator.Separate(points, n, true, fn);
+            var worst = separator.Separate(points, 1, false, fn).First();
             var shpFromBestPoints = best.Select(Shlp);
             var lambdaPoints = GeneratePoints(lambda);
             var additionalPoints = ShlpFromLambdaPoints(lambdaPoints, worst);
@@ -95,9 +82,9 @@ namespace OPR.KP
                 .ToList(),
                 n,
                 true,
-                hyperCubeConfig.Fn);
+                fn);
 
-            return  new MktStepEntities
+            return new MktStepEntities
             {
                 BestFromStart = best,
                 LambdaPoints = lambdaPoints,
@@ -111,7 +98,7 @@ namespace OPR.KP
 
         private IList<MKT_Point> ShlpFromLambdaPoints(IList<MKT_Point> points, MKT_Point worstPoint)
         {
-           var suitablePoints = new List<MKT_Point>();
+            var suitablePoints = new List<MKT_Point>();
             var watch2 = Stopwatch.StartNew();
             foreach (var mktPoint in points)
             {
@@ -129,21 +116,13 @@ namespace OPR.KP
 
         private MKT_Point Shlp(MKT_Point point)
         {
-            var hyperCube = new ShlpHyperCube(point,
-                hyperCubeConfig.SideLength,
-                hyperCubeConfig.DeltaSideLenth,
-                hyperCubeConfig.IterationCount,
-                hyperCubeConfig.InnerPointsCount,
-                bounds,
-                hyperCubeConfig.Fn);
-            var result = hyperCube.Calculate();
-
+            var result = shlpWrapper.GetShlpObject(point).Calculate();
             return new MKT_Point(result.x, result.y, point);
         }
 
         private IList<MKT_Point> GeneratePoints(int count)
         {
-            return generator.Generate(count, new Genereate_MKT_Point_Arg { Bounds = bounds, fn = hyperCubeConfig.Fn });
+            return generator.Generate(count, new Genereate_MKT_Point_Arg { Bounds = bounds, fn = fn });
         }
     }
 }

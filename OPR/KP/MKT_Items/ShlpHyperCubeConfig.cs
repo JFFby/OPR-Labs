@@ -1,4 +1,5 @@
 ﻿using System;
+using OPR.lb1;
 
 namespace OPR.KP.MKT_Items
 {
@@ -13,5 +14,7 @@ namespace OPR.KP.MKT_Items
         public int InnerPointsCount { get; set; }
 
         public Func<float, float, float> Fn { get; set; }
+
+        public SquarePoint[] Bounds { get; set; }
     }
 }
