@@ -35,7 +35,7 @@ namespace MKT.UI
                 Iterations = 10,
                 Separator = new BestSeparator()
             };
-
+            var name = config.ToString();
             mkt = new OPR.KP.MKT(config);
             mkt.OnEnd += OnMKTEnd;
             Step();

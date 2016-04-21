@@ -2,9 +2,12 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OPR.KP.Logger;
 using OPR.KP.MKT_Items;
+using OPR.KP.Shlp;
 using OPR.KP.Shlp.NelderMid;
 using OPR.lb1;
+using OPR.lb2;
 
 namespace UnitTestProject1
 {
@@ -47,6 +50,35 @@ namespace UnitTestProject1
             var nm_r = fn(nmResult.x, nmResult.y);
             var hs_r = fn(hsResult.x, hsResult.y);
             Assert.IsTrue(Math.Abs(nm_r - hs_r) < 0.01);
+        }
+
+        [TestMethod]
+        public void LogTest()
+        {
+            var config = CreateConfig(4);
+            var logger = new Logger();
+            logger.Log(config, new LogValue { Value = 1, X = 1, Y = 3 });
+        }
+
+        private MKT_Config CreateConfig(int lambda)
+        {
+
+            var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
+            var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds);
+            var N_Bounds = new[] { 5, 10 };
+            var n_Bounds = new int[] { 3, 5 };
+            return new MKT_Config
+            {
+                n = lambda,// RandomHelper.Random(n_Bounds[0], n_Bounds[1]),
+                N = 3,//RandomHelper.Random(N_Bounds[0], N_Bounds[1]),
+                Bounds = bounds,
+                Fn = MultiplicationCoord,
+                Shlp = shlp,
+                Generator = new RandomGenerator(),
+                Lambda = 4,
+                Iterations = 10,
+                Separator = new BestSeparator()
+            };
         }
 
         protected virtual float MultiplicationCoord(float x, float y)

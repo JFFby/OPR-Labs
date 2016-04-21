@@ -24,5 +24,16 @@ namespace OPR.KP.MKT_Items
         public byte Lambda { get; set; }
 
         public Func<float, float, float> Fn { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join("_", GetBoundString(Bounds[0].x, Bounds[1].x), GetBoundString(Bounds[0].y, Bounds[1].y)
+                , Shlp.ShlpType, Generator.GetType().Name, Separator.GetType().Name, N, n, Iterations, Lambda);
+        }
+
+        public string GetBoundString(float from, float to)
+        {
+            return string.Format("{0}-{1}",from, to);
+        }
     }
 }
