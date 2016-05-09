@@ -157,9 +157,10 @@ namespace Lab2.UI
             {
                 var pNu = byte.Parse(pNuTextbox.Text);
                 N = byte.Parse(TextboxN.Text);
+                var randomOrGridStatus = randomOrGridPoint.Checked;
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
-                ssga = new SSGA(BoundsX(), BoundsY(), N, n);
+                ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus);
                 return true;
             }
 
@@ -216,6 +217,7 @@ namespace Lab2.UI
             nTextBox.Text = "10";
             tTextBox.Text = "0,1";
             tTextBox.Enabled = false;
+            randomOrGridPoint.Checked = true;
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -224,6 +226,11 @@ namespace Lab2.UI
             {
                 Step();
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+        
         }
     }
 }

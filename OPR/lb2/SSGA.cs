@@ -13,9 +13,11 @@ namespace OPR.lb2
         private readonly List<BinaryGeneration> generations = new List<BinaryGeneration>();
         private readonly byte N = 10;
         private readonly byte count = 10;
+        private readonly bool randomOrGrid = false;
 
-        public SSGA(float[] interval_x, float[] interval_y, byte N, byte n)
+        public SSGA(float[] interval_x, float[] interval_y, byte N, byte n, bool randomOrGridStatus)
         {
+            randomOrGrid = randomOrGridStatus;
             count = n;
             this.N = N;
             this.interval_x = interval_x;
@@ -63,15 +65,37 @@ namespace OPR.lb2
 
         private BinaryGeneration CreateFirstPopulation()
         {
+            float[] step = new float[2];
+            float[] stepPoint = new float[2];
+            stepPoint[0] = interval_x[0];
+            stepPoint[1] = interval_y[0];
             var entites = new List<Entity<BinaryGenom>>();
+            step = (randomOrGrid) ?
+                step :
+                GridPointsHelper.getStepOfGrid((interval_x[1] - interval_x[0]), (interval_y[1] - interval_y[0]), count);
+
             for (int i = 0; i < count; i++)
             {
-                var point = new Point<float>(
+                Point<float> point;
+                if (randomOrGrid)
+                {
+                    point = new Point<float>(
                     (float)Math.Round(RandomHelper.RandomFloat(interval_x[0], interval_x[1]), 1),
                     (float)Math.Round(RandomHelper.RandomFloat(interval_y[0], interval_y[1]), 1));
+                } else
+                {
+                    point = new Point<float>(stepPoint[0], stepPoint[1]);
+                    stepPoint[0] += step[0];
+                    if(stepPoint[0] >= interval_x[1] - step[0])
+                    {
+                        stepPoint[0] = interval_x[0];
+                        stepPoint[1] += step[1];
+                    }
+                    
+                }
+
                 entites.Add(new BinaryEntity(point, fn(point.x, point.y)));
             }
-
             return new BinaryGeneration(entites).MarkUpGenereation();
         }
 
