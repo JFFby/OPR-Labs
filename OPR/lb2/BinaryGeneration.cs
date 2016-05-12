@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using OPR.lb2.Enums;
 
 namespace OPR.lb2
@@ -7,7 +8,7 @@ namespace OPR.lb2
     public sealed class BinaryGeneration : Generation<BinaryGenom>
     {
         private BinaryEntity worstEntity;
-        private readonly IList<BinaryEntity> binaryGeneration;
+        private IList<BinaryEntity> binaryGeneration;
 
         public BinaryGeneration(List<Entity<BinaryGenom>> entities) : base(entities)
         {
@@ -28,6 +29,7 @@ namespace OPR.lb2
         {
             get { return binaryGeneration.Union(
                 Children?.OfType<BinaryEntity>() ?? new List<BinaryEntity>()).ToList(); }
+            set { binaryGeneration = value; }
         }
 
         public void AddChilds(IList<BinaryEntity> childs)
@@ -54,6 +56,13 @@ namespace OPR.lb2
             var best = binaryGeneration.OrderBy(x => x.Value).Take(take).ToList();
             best.ForEach(x => x.Function = EntityFunction.BestParent);
             return best.Cast<Entity<BinaryGenom>>().ToList();
+        }
+
+        public IList<Entity<BinaryGenom>> ClearValueOfParent()
+        {
+            var all = binaryGeneration.ToList();
+            all.ForEach(x => x.Function = EntityFunction.None);
+            return all.Cast<Entity<BinaryGenom>>().ToList();
         }
 
         public override Entity<BinaryGenom> GetWorst()

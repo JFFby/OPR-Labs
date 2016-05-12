@@ -74,6 +74,7 @@
     <Compile Include="lb2\GridPointsHelper.cs" />
     <Compile Include="lb2\Interfaces\Common\IGenerator.cs" />
     <Compile Include="lb2\Interfaces\Common\ISeparator.cs" />
+    <Compile Include="lb2\Interfaces\Common\ISelection.cs" />
     <Compile Include="lb2\Interfaces\IGenom.cs" />
     <Compile Include="lb2\SSGA.cs" />
     <Compile Include="lb2\Сhromosome.cs" />

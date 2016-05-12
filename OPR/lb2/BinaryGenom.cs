@@ -4,6 +4,7 @@ using System.Linq;
 using OPR.lb1;
 using OPR.lb2.Enums;
 using OPR.lb2.Interfaces;
+using OPR.lb2.Interfaces.Common;
 
 namespace OPR.lb2
 {
@@ -97,5 +98,29 @@ namespace OPR.lb2
             }
             return result;
         }
+/*
+        public float getProcentOfAll(Entity<BinaryGenom>[] entities)
+        {
+            var result = new List<Entity<BinaryGenom>>(entities);
+            float summ = 0, procent = 0;
+
+            foreach (var entity in entities.OfType<BinaryGenom>())
+            {
+              //  summ += entity.Value;
+            }
+            procent = 360 / summ;
+
+            var entityRoulette =
+                from p in entities.OfType<BinaryGenom>()
+                select new { p.id, Procent = p.Value * procent };
+
+ 
+            var entityRoulette =
+            from entity in entities
+            select new { entity.id, Procent = entity.Value * procent };
+            
+            return 2.1F;
+        }
+*/
     }
 }

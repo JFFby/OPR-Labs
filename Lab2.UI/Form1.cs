@@ -160,7 +160,7 @@ namespace Lab2.UI
                 var randomOrGridStatus = randomOrGridPoint.Checked;
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
-                ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus);
+                ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
                 return true;
             }
 
@@ -213,7 +213,7 @@ namespace Lab2.UI
             ys.Text = "-4";
             yb.Text = "4";
             pNuTextbox.Text = "7";
-            TextboxN.Text = "5";
+            TextboxN.Text = "20";
             nTextBox.Text = "10";
             tTextBox.Text = "0,1";
             tTextBox.Enabled = false;
@@ -231,6 +231,27 @@ namespace Lab2.UI
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
         
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void comboBox1_ControlAdded(object sender, ControlEventArgs e)
+        {
+        }
+
+        private void comboBox1_BindingContextChanged(object sender, EventArgs e)
+        {
+            comboBox1.Items.Add("Roulette");
+            comboBox1.Items.Add("Tournament");
+            comboBox1.Items.Add("Rang");
+            comboBox1.SelectedIndex = 0;
         }
     }
 }
