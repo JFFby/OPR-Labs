@@ -81,6 +81,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="lb1\Square.cs" />
     <Compile Include="lb2\RandomHelper.cs" />
+    <Compile Include="SSGA2\CreationResult.cs" />
+    <Compile Include="SSGA2\Entity.cs" />
+    <Compile Include="SSGA2\EntityArgs.cs" />
+    <Compile Include="SSGA2\Generation.cs" />
+    <Compile Include="SSGA2\Genom.cs" />
+    <Compile Include="SSGA2\Interfaces\IChromosome.cs" />
+    <Compile Include="SSGA2\Interfaces\IGenom.cs" />
+    <Compile Include="SSGA2\Interfaces\IValueService.cs" />
+    <Compile Include="SSGA2\Italik\BinaryCromosome.cs" />
+    <Compile Include="SSGA2\Italik\BinaryGenom.cs" />
+    <Compile Include="SSGA2\Italik\BinaryEntityArgs.cs" />
+    <Compile Include="SSGA2\SSGA2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
