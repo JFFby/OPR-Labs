@@ -19,7 +19,6 @@ namespace OPR.SSGA2
 
         public static bool IsBestFromChildernOnly { get; set; }
 
-
         public static Func<float, float, float> Fn { get; set; }
         #endregion
     }
