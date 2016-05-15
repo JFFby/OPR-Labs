@@ -10,8 +10,6 @@ namespace OPR.SSGA2
     public abstract class Genom
     {
         //TODO: To global settings
-        protected bool  = true;
-
         protected IChromosome cromosomeCreator;
         protected int[] _code;
 
@@ -21,7 +19,7 @@ namespace OPR.SSGA2
             var secondCode = cromosomeCreator.EntityArgsToCode(partnersArgs);
 
             List<CreationResult> result = new List<CreationResult>();
-            if (isCrossingFirst)
+            if (GlobalSettings.IsCrossingFirst)
             {
                 var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
                 var firstChild = CrossCode(_code, secondCode, crossingPoint);
