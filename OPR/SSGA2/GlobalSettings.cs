@@ -4,7 +4,12 @@ namespace OPR.SSGA2
 {
     public static class GlobalSettings
     {
-        public static bool IsBestFromChildernOnly { get; set; }
+        #region Common Settings
+        public static int isRandomOrGridPoints { get; set; }
+
+        public static int firstSelectionVariant { get; set; }
+
+        public static int N { get; set; }
 
         public static int nFromN { get; set; }
 
@@ -12,6 +17,10 @@ namespace OPR.SSGA2
 
         public static bool IsCrossingFirst { get; set; }
 
-        public static Func<float, float, float> Fn { get; set; } 
+        public static bool IsBestFromChildernOnly { get; set; }
+
+
+        public static Func<float, float, float> Fn { get; set; }
+        #endregion
     }
 }
