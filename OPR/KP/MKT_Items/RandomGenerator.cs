@@ -11,14 +11,8 @@ namespace OPR.KP.MKT_Items
     public sealed class RandomGenerator : IGenerator<MKT_Point>
     {
         public readonly IConverter converter;
-        public readonly object state;
-        public readonly int count;
-
-        public RandomGenerator()
-        {
-            state = null; //TODOL from Global
-            count = 1;
-        }
+        public object state;
+        public int count;
 
         public RandomGenerator(IConverter converter)
         {
@@ -43,6 +37,12 @@ namespace OPR.KP.MKT_Items
         public IList<EntityArgs> GenerateEntityArgs()
         {
             return Generate().Select(converter.Convert).ToList();
+        }
+
+        public void SetupState(dynamic state)
+        {
+            count = state.count;
+            this.state = state.state;
         }
 
         private Genereate_MKT_Point_Arg GetBounds()
