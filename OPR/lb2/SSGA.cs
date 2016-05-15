@@ -7,6 +7,7 @@ using OPR.lb2.Enums;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public sealed class SSGA: ISelection
     {
         private readonly float[] interval_x = new float[] { -4, 4 };

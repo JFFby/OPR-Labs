@@ -84,9 +84,12 @@
     <Compile Include="SSGA2\CreationResult.cs" />
     <Compile Include="SSGA2\Entity.cs" />
     <Compile Include="SSGA2\EntityArgs.cs" />
+    <Compile Include="SSGA2\Extension\GenerationExtension.cs" />
     <Compile Include="SSGA2\Generation.cs" />
     <Compile Include="SSGA2\Genom.cs" />
+    <Compile Include="SSGA2\GlobalSettings.cs" />
     <Compile Include="SSGA2\Interfaces\IChromosome.cs" />
+    <Compile Include="SSGA2\Interfaces\IConverter.cs" />
     <Compile Include="SSGA2\Interfaces\IGenom.cs" />
     <Compile Include="SSGA2\Interfaces\IValueService.cs" />
     <Compile Include="SSGA2\Italik\BinaryCromosome.cs" />

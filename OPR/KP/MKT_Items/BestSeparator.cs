@@ -8,7 +8,15 @@ namespace OPR.KP.MKT_Items
 {
     public sealed class BestSeparator : ISeparator<MKT_Point>
     {
-        public IList<MKT_Point> Separate(IList<MKT_Point> inpuList, int count, bool isAscending, object state)
+        private readonly object state;
+
+        public BestSeparator()
+        {
+            //TODO: from Globals
+            state = null;
+        }
+
+        public IList<MKT_Point> Separate(IList<MKT_Point> inpuList, int count, bool isAscending)
         {
             //var fn = GetFunc(state);
             var sortedInputs = isAscending

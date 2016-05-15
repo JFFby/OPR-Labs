@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OPR.lb2;
 using OPR.lb2.Enums;
 using OPR.SSGA2.Interfaces;
@@ -8,7 +9,8 @@ namespace OPR.SSGA2
 {
     public abstract class Genom
     {
-        private readonly int mutationChance = 7; //TODO: To global settings
+        //TODO: To global settings
+        protected bool  = true;
 
         protected IChromosome cromosomeCreator;
         protected int[] _code;
@@ -17,39 +19,67 @@ namespace OPR.SSGA2
         {
             //TODO: if 1... else if 2..
             var secondCode = cromosomeCreator.EntityArgsToCode(partnersArgs);
-            var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
-            var firstChild = CrossCode(_code, secondCode, crossingPoint);
-            var secondChild = CrossCode(secondCode, _code, crossingPoint);
-            return Mutation(firstChild, secondChild);
-        }
 
-        public List<CreationResult> Mutation(params int[][] codes)
-        {
-            var result = new List<CreationResult>();
-            foreach (int[] code in codes)
+            List<CreationResult> result = new List<CreationResult>();
+            if (isCrossingFirst)
             {
-                if (mutationChance >= RandomHelper.Random(0, 100))
+                var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
+                var firstChild = CrossCode(_code, secondCode, crossingPoint);
+                AddIfValid(result, firstChild, EntityType.Child);
+                var secondChild = CrossCode(secondCode, _code, crossingPoint);
+                AddIfValid(result, secondChild, EntityType.Child);
+
+                var mutationResult = Mutation(firstChild, secondChild);
+                foreach (var i in mutationResult)
                 {
-                    var mutatedCode = cromosomeCreator.Mutate(code);
-                    AddIfValid(result, mutatedCode);
+                    AddIfValid(result, i, EntityType.Mutant);
                 }
-                else
+            }
+            else
+            {
+                var mutationResult = Mutation(_code, secondCode);
+                if (mutationResult.Any())
                 {
-                    AddIfValid(result, code);
+                    foreach (var i in mutationResult)
+                    {
+                        AddIfValid(result, i, EntityType.Mutant);
+                    }
+
+                    var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
+                    var firstChild = CrossCode(mutationResult[0], mutationResult[1], crossingPoint);
+                    AddIfValid(result, firstChild, EntityType.Child);
+                    var secondChild = CrossCode(mutationResult[1], mutationResult[0], crossingPoint);
+                    AddIfValid(result, secondChild, EntityType.Child);
                 }
             }
 
+           
             return result;
         }
 
-        private void AddIfValid(IList<CreationResult> result, int[] code)
+        public int[][] Mutation(params int[][] codes)
+        {
+            var result = new List<int[]>();
+            foreach (int[] code in codes)
+            {
+                if (GlobalSettings.MutationChance >= RandomHelper.Random(0, 100))
+                {
+                    var mutatedCode = cromosomeCreator.Mutate(code);
+                    result.Add(mutatedCode);
+                }
+            }
+
+            return result.ToArray();
+        }
+
+        private void AddIfValid(IList<CreationResult> result, int[] code, EntityType type)
         {
             var args = cromosomeCreator.CodeToEntityArgs(code);
             if (args != null)
             {
                 result.Add(new CreationResult
                 {
-                    Type = EntityType.Mutant,
+                    Type = type,
                     Args = args
                 });
             }

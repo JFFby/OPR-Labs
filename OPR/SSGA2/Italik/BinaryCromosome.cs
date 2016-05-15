@@ -26,6 +26,7 @@ namespace OPR.SSGA2.Italik
 
         public EntityArgs CodeToEntityArgs(int[] code)
         {
+            //TODO: Add validation
             var oneNumberLength = code.Length/2;
             var firstPart = new int[oneNumberLength];
             Array.Copy(code,firstPart,oneNumberLength);
@@ -39,7 +40,13 @@ namespace OPR.SSGA2.Italik
 
         public int[] Mutate(int[] code)
         {
-            throw new System.NotImplementedException();
+            var result = new int[code.Length];
+            for (int i = 0; i < code.Length; i++)
+            {
+                result[i] = code[i] == 1 ? 0 : 1;
+            }
+
+            return result;
         }
 
         private BinaryEntityArgs GetArgs(EntityArgs args)
@@ -47,7 +54,7 @@ namespace OPR.SSGA2.Italik
             var binaryArgs = args as BinaryEntityArgs;
             if (binaryArgs == null)
             {
-                throw new System.NotImplementedException();
+                throw new System.ArgumentException();
             }
 
             return binaryArgs;

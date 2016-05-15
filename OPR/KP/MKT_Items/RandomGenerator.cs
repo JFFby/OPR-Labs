@@ -1,15 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OPR.lb2;
 using OPR.lb2.Interfaces.Common;
+using OPR.SSGA2;
+using OPR.SSGA2.Interfaces;
 
 namespace OPR.KP.MKT_Items
 {
     public sealed class RandomGenerator : IGenerator<MKT_Point>
     {
-        public IList<MKT_Point> Generate(int count, object state)
+        public readonly IConverter converter;
+        public readonly object state;
+        public readonly int count;
+
+        public RandomGenerator()
         {
-            var bounds = GetBounds(state);
+            state = null; //TODOL from Global
+            count = 1;
+        }
+
+        public RandomGenerator(IConverter converter)
+        {
+            this.converter = converter;
+        }
+
+        public IList<MKT_Point> Generate()
+        {
+            var bounds = GetBounds();
             var points = new List<MKT_Point>();
             for (int i = 0; i < count; ++i)
             {
@@ -22,7 +40,12 @@ namespace OPR.KP.MKT_Items
             return points;
         }
 
-        private Genereate_MKT_Point_Arg GetBounds(object state)
+        public IList<EntityArgs> GenerateEntityArgs()
+        {
+            return Generate().Select(converter.Convert).ToList();
+        }
+
+        private Genereate_MKT_Point_Arg GetBounds()
         {
             var bounds = state as Genereate_MKT_Point_Arg;
             if (bounds == null || bounds.Bounds.Length != 2)

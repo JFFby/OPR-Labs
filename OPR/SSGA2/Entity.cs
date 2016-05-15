@@ -19,6 +19,7 @@ namespace OPR.SSGA2
             genom = new TGenom();
             genom.Initializae(args);
             Type = EntityType.Parent;
+            Function = EntityFunction.None;
         }
 
         public Entity(CreationResult result): this(result.Args)
@@ -29,6 +30,8 @@ namespace OPR.SSGA2
         public string Code { get { return genom.Code; } }
 
         public EntityType Type { get; private set; }
+
+        public EntityFunction Function { get; set; }
 
         public float Value
         {
@@ -44,7 +47,7 @@ namespace OPR.SSGA2
             }
         }
 
-        public IList<Entity<TValueService, TGenom>> CreateChildEntity(Entity<TValueService, TGenom> entity)
+        public List<Entity<TValueService, TGenom>> CreateChildEntity(Entity<TValueService, TGenom> entity)
         {
             return genom.CreateNewGenerationEntity(entity.args)
                 .Select(result => new Entity<TValueService, TGenom>(result))
