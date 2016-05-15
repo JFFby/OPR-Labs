@@ -33,6 +33,8 @@ namespace OPR.SSGA2
 
         public EntityFunction Function { get; set; }
 
+        public int Id { get; set; }
+
         public float Value
         {
             get
