@@ -9,7 +9,6 @@ namespace OPR.SSGA2
 {
     public abstract class Genom
     {
-        //TODO: To global settings
         protected IChromosome cromosomeCreator;
         protected int[] _code;
 

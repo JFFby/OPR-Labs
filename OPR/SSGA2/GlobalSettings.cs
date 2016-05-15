@@ -1,4 +1,6 @@
-﻿namespace OPR.SSGA2
+﻿using System;
+
+namespace OPR.SSGA2
 {
     public static class GlobalSettings
     {
@@ -16,6 +18,9 @@
         public static bool IsCrossingFirst { get; set; }
 
         public static bool IsBestFromChildernOnly { get; set; }
+
+
+        public static Func<float, float, float> Fn { get; set; }
         #endregion
     }
 }

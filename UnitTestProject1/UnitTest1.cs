@@ -74,7 +74,7 @@ namespace UnitTestProject1
                 Bounds = bounds,
                 Fn = MultiplicationCoord,
                 Shlp = shlp,
-                Generator = new RandomGenerator(),
+                Generator = new RandomGenerator(null),
                 Lambda = 4,
                 Iterations = 10,
                 Separator = new BestSeparator()

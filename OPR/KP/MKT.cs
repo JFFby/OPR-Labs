@@ -52,7 +52,7 @@ namespace OPR.KP
 
             if (++currentIteration == iterations && OnEnd != null)
             {
-                var bestPoint = separator.Separate(entities.TopPoints, 1, true, fn).First();
+                var bestPoint = separator.Separate(entities.TopPoints, 1, true).First();
                 OnEnd(bestPoint, new EventArgs());
             }
 
@@ -67,13 +67,13 @@ namespace OPR.KP
                 Iteration(entities.TopPoints);
             }
 
-            return separator.Separate(entities.TopPoints, 1, true, fn).First();
+            return separator.Separate(entities.TopPoints, 1, true).First();
         }
 
         private MktStepEntities GenreateEntitesForThisStep(IList<MKT_Point> points)
         {
-            var best = separator.Separate(points, n, true, fn);
-            var worst = separator.Separate(points, 1, false, fn).First();
+            var best = separator.Separate(points, n, true);
+            var worst = separator.Separate(points, 1, false).First();
             var shpFromBestPoints = best.Select(Shlp);
             var lambdaPoints = GeneratePoints(lambda);
             var additionalPoints = ShlpFromLambdaPoints(lambdaPoints, worst);
@@ -81,8 +81,7 @@ namespace OPR.KP
                 .Union(additionalPoints)
                 .ToList(),
                 n,
-                true,
-                fn);
+                true);
 
             return new MktStepEntities
             {
@@ -122,7 +121,15 @@ namespace OPR.KP
 
         private IList<MKT_Point> GeneratePoints(int count)
         {
-            return generator.Generate(count, new Genereate_MKT_Point_Arg { Bounds = bounds, fn = fn });
+
+            var state = new
+            {
+                count,
+                state = new Genereate_MKT_Point_Arg {Bounds = bounds, fn = fn}
+            };
+
+            generator.SetupState(state);
+            return generator.Generate();
         }
     }
 }

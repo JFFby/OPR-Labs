@@ -8,5 +8,7 @@ namespace OPR.lb2.Interfaces.Common
         IList<T> Generate();
 
         IList<EntityArgs> GenerateEntityArgs();
+
+        void SetupState(dynamic state);
     }
 }

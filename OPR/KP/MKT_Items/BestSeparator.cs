@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OPR.lb1;
 using OPR.lb2.Interfaces.Common;
+using OPR.SSGA2;
 
 namespace OPR.KP.MKT_Items
 {
     public sealed class BestSeparator : ISeparator<MKT_Point>
     {
         private readonly object state;
-
-        public BestSeparator()
-        {
-            //TODO: from Globals
-            state = null;
-        }
-
+        
         public IList<MKT_Point> Separate(IList<MKT_Point> inpuList, int count, bool isAscending)
         {
             //var fn = GetFunc(state);
@@ -27,7 +21,7 @@ namespace OPR.KP.MKT_Items
 
         private Func<float, float, float> GetFunc(object state)
         {
-            var fn = state as Func<float, float, float>;
+            var fn = GlobalSettings.Fn;
             if (fn == null)
             {
                 throw new  ArgumentException("state");
