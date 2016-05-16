@@ -6,6 +6,7 @@ using OPR.lb2.Enums;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public sealed class BinaryEntity : Entity<BinaryGenom>
     {
         public BinaryEntity(Point<float> point, float value) : base(point)

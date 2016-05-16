@@ -14,10 +14,12 @@ namespace OPR.KP.MKT_Items
         public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
             //var fn = GetFunc(state);
+            var copyOfInput = new List<TValue> (inpuList);
             var sortedInputs = isAscending
-                ? inpuList.OrderBy(x => x.Value)
-                : inpuList.OrderByDescending(x => x.Value);
-            return sortedInputs.Take(count).ToList();
+                ? copyOfInput.OrderBy(x => x.Value)
+                : copyOfInput.OrderByDescending(x => x.Value);
+            var winners = sortedInputs.Take(count).ToList();
+            return inpuList.Where(x => winners.Contains(x)).ToList();
         }
 
         private Func<float, float, float> GetFunc(object state)

@@ -26,6 +26,12 @@ namespace OPR.SSGA2
         {
             Type = result.Type;
             CrossPoint = result.CrossingPoint;
+        }
+
+        public Entity(Entity<TValueService, TGenom> entity) :this(entity.Args)
+        {
+            Id = entity.Id;
+            GenerationId = entity.GenerationId;
         } 
 
         public string Code { get { return genom.Code; } }
@@ -37,6 +43,8 @@ namespace OPR.SSGA2
         public EntityFunction Function { get; set; }
 
         public int Id { get; set; }
+
+        public int GenerationId { get; set; }
 
         public float Value
         {
@@ -57,6 +65,11 @@ namespace OPR.SSGA2
             return genom.CreateNewGenerationEntity(entity.Args)
                 .Select(result => new Entity<TValueService, TGenom>(result))
                 .ToList();
+        }
+
+        public void MargAsParent()
+        {
+            Type = EntityType.Parent;
         }
     }
 }

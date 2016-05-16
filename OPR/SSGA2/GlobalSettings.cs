@@ -20,6 +20,18 @@ namespace OPR.SSGA2
         public static bool IsBestFromChildernOnly { get; set; }
 
         public static Func<float, float, float> Fn { get; set; }
+
+        public static float LeftXBound { get; set; }
+
+        public static float RightXBound { get; set; }
+
+        public static float TopYBound { get; set; }
+
+        public static float BottomYBound { get; set; }
+        #endregion
+
+        #region BinaryRegion
+        public static int MaxIntValueFroCrossing { get; set; }
         #endregion
     }
 }

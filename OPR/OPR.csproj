@@ -89,6 +89,7 @@
     <Compile Include="SSGA2\EntityArgs.cs" />
     <Compile Include="SSGA2\Extension\BinaryEntityExtenstion.cs" />
     <Compile Include="SSGA2\Extension\GenerationExtension.cs" />
+    <Compile Include="SSGA2\Extension\ValidationService.cs" />
     <Compile Include="SSGA2\Generation.cs" />
     <Compile Include="SSGA2\Genom.cs" />
     <Compile Include="SSGA2\GlobalSettings.cs" />

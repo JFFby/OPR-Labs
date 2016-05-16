@@ -1,8 +1,10 @@
-﻿using OPR.lb1;
+﻿using System;
+using OPR.lb1;
 using OPR.lb2.Interfaces;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public class Entity<T> where T : IGenom, new()
     {
         public Entity() { }

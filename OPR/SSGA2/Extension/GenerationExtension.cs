@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2.Extension
@@ -23,7 +24,15 @@ namespace OPR.SSGA2.Extension
             this IEnumerable<Entity<TValueService, TGenom>> entities)
             where TValueService : IValueService, new() where TGenom : IGenom, new()
         {
-            return new SSGA2.Generation<TValueService, TGenom>(entities.ToList());
+            return new Generation<TValueService, TGenom>(entities.ToList());
+        }
+
+        public static Generation<TValueService, TGenom> ToMarkedGeneration<TValueService, TGenom>(
+           this IEnumerable<Entity<TValueService, TGenom>> entities,
+           ISeparator<Entity<TValueService, TGenom>> separator)
+           where TValueService : IValueService, new() where TGenom : IGenom, new()
+        {
+            return new Generation<TValueService, TGenom>(entities.ToList(), false).MarkUpGenereation(separator);
         }
 
         public static int GetChilrensCrossingPoint<TValueService, TGenom>(this Generation<TValueService, TGenom> generation)

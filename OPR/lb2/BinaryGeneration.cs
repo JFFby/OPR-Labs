@@ -5,6 +5,7 @@ using OPR.lb2.Enums;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public sealed class BinaryGeneration : Generation<BinaryGenom>
     {
         private BinaryEntity worstEntity;

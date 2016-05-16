@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using OPR.KP.MKT_Items;
+using OPR.lb1;
 using OPR.lb2;
 using OPR.lb2.Enums;
 using OPR.SSGA2;
@@ -64,7 +65,7 @@ namespace Lab2.UI
                 for (var i = 0; i < binaryGeneration.Parents.Count; ++i)
                 {
                     var parent = binaryGeneration.Parents[i];
-                    CreateRow(parent, binaryGeneration.Id.ToString());
+                    CreateRow(parent);
                 }
 
                 if (binaryGeneration.Children != null && binaryGeneration.Children.Any())
@@ -75,7 +76,7 @@ namespace Lab2.UI
                         DrawLineChildrenSeparator(GetGroupMsg(group.Key, binaryGeneration.GetChilrensCrossingPoint().ToString()));
                         foreach (var item in group)
                         {
-                            CreateRow(item, binaryGeneration.Id.ToString());
+                            CreateRow(item);
                         }
                     }
                 }
@@ -92,11 +93,11 @@ namespace Lab2.UI
             return type.ToString();
         }
 
-        private void CreateRow(Entity<BinaryValueService, OPR.SSGA2.Italik.BinaryGenom> entity, string geneId)
+        private void CreateRow(Entity<BinaryValueService, OPR.SSGA2.Italik.BinaryGenom> entity)
         {
             var row = GetColorizedRow(entity.Function);
             row.Cells.AddRange(Cells(row.DefaultCellStyle.BackColor).ToArray());
-            row.Cells[0].Value = string.Format("{0}.{1}", geneId, entity.Id);
+            row.Cells[0].Value = string.Format("{0}.{1}", entity.GenerationId, entity.Id);
             row.Cells[1].Value = entity.X();
             row.Cells[2].Value = entity.Y();
             row.Cells[3].Value = entity.Code;
@@ -169,10 +170,39 @@ namespace Lab2.UI
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
                 //ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
+
+                GlobalSettings.N = 20;
+                GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
+                GlobalSettings.IsBestFromChildernOnly = true;
+                GlobalSettings.IsCrossingFirst = true;
+                GlobalSettings.MutationChance = 7;
+                GlobalSettings.firstSelectionVariant = 1; //What is it? :)
+                GlobalSettings.isRandomOrGridPoints = 1; //not obviously!
+                GlobalSettings.nFromN = 10;
+                GlobalSettings.LeftXBound = -4;
+                GlobalSettings.RightXBound = 4;
+                GlobalSettings.TopYBound = 4;
+                GlobalSettings.BottomYBound = -4;
+                GlobalSettings.MaxIntValueFroCrossing = 4;
+
+                var generator = new RandomGenerator(new BinaryArgsConverter());
+                generator.SetupState((dynamic) new
+                {
+                    state = new Genereate_MKT_Point_Arg
+                    {
+                        Bounds = new SquarePoint[]
+                        {
+                            new SquarePoint(GlobalSettings.LeftXBound, GlobalSettings.BottomYBound),
+                            new SquarePoint(GlobalSettings.RightXBound, GlobalSettings.TopYBound)
+                        },
+                        fn = GlobalSettings.Fn
+                    }
+                });
+                
                 ssga = new BinarySSGA(
                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                    new RandomGenerator(new BinaryArgsConverter()));
+                     generator);
                 return true;
             }
 

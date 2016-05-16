@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using OPR.lb2;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
@@ -12,14 +13,13 @@ namespace OPR.KP.MKT_Items
     {
         public readonly IConverter converter;
         public object state;
-        public int count;
 
         public RandomGenerator(IConverter converter)
         {
             this.converter = converter;
         }
 
-        public IList<MKT_Point> Generate()
+        public IList<MKT_Point> Generate(int count)
         {
             var bounds = GetBounds();
             var points = new List<MKT_Point>();
@@ -34,15 +34,15 @@ namespace OPR.KP.MKT_Items
             return points;
         }
 
-        public IList<EntityArgs> GenerateEntityArgs()
+        public IList<EntityArgs> GenerateEntityArgs(int count)
         {
-            return Generate().Select(converter.Convert).ToList();
+            return Generate(count).Select(converter.Convert).ToList();
         }
 
         public void SetupState(dynamic state)
         {
-            count = state.count;
-            this.state = state.state;
+            var property = state.GetType().GetProperty("state");
+            this.state = property.GetValue(state);
         }
 
         private Genereate_MKT_Point_Arg GetBounds()

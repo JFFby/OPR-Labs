@@ -4,6 +4,7 @@ using System.Text;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public sealed class BinaryСhromosome
     {
         public static void SetUp(int maxValue = 4, float accuracy = 0.1f, byte mutationChance = 7)

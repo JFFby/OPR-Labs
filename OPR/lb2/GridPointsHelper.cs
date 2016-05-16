@@ -12,21 +12,19 @@ namespace OPR.lb2
     {
         public IConverter converter;
         public object state;
-        public int count;
 
         public void RandomGenerator(IConverter converter)
         {
             this.converter = converter;
         }
 
-        public IList<EntityArgs> GenerateEntityArgs()
+        public IList<EntityArgs> GenerateEntityArgs(int count)
         {
-            return Generate().Select(converter.Convert).ToList();
+            return Generate(count).Select(converter.Convert).ToList();
         }
 
         public void SetupState(dynamic state)
         {
-            count = state.count;
             this.state = state.state;
         }
 
@@ -41,7 +39,7 @@ namespace OPR.lb2
             return bounds;
         }
 
-        public IList<MKT_Point> Generate()
+        public IList<MKT_Point> Generate(int count)
         {
             var points = new List<MKT_Point>();
             var bounds = GetBounds();

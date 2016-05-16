@@ -14,16 +14,29 @@ namespace OPR.SSGA2
         private Entity<TValueService, TGenom> worstEntity;
 
         private List<Entity<TValueService, TGenom>> generation = new List<Entity<TValueService, TGenom>>();
-
-        public Generation(List<Entity<TValueService, TGenom>> entities)
+        private List<Entity<TValueService, TGenom>> children = new List<Entity<TValueService, TGenom>>();
+        private ISeparator<Entity<TValueService, TGenom>> chachedSeparator; // not good
+        
+        public Generation(List<Entity<TValueService, TGenom>> entities, bool isIncreaseId = true)
         {
             generation = entities;
-            Id = ++identity;
 
-            for (int i = 0; i < generation.Count; i++)
+            if (isIncreaseId)
             {
-                generation[i].Function = EntityFunction.None;
-                generation[i].Id = i + 1;
+                Id = ++ identity;
+                for (int i = 0, n = 0; i < generation.Count; i++)
+                {
+                    generation[i].Function = EntityFunction.None;
+                    if (generation[i].Id == 0)
+                    {
+                        generation[i].Id = ++n;
+                    }
+
+                    if (generation[i].GenerationId == 0)
+                    {
+                        generation[i].GenerationId = Id;
+                    }
+                }
             }
         }
 
@@ -34,12 +47,18 @@ namespace OPR.SSGA2
 
         public List<Entity<TValueService, TGenom>> Children
         {
-            get { return generation.Where(x => x.Type == EntityType.Child).ToList(); }
+            get { return children; }
         }
 
         public int Id { get; set; }
 
         public List<Entity<TValueService, TGenom>> Entites { get { return generation; } }
+
+        public void AddChildern(IList<Entity<TValueService, TGenom>> children)
+        {
+            this.children.AddRange(children);
+            MarkUpChildern();
+        }
 
         public List<Entity<TValueService, TGenom>> Winners()
         {
@@ -49,8 +68,19 @@ namespace OPR.SSGA2
 
         public Generation<TValueService, TGenom> MarkUpGenereation(ISeparator<Entity<TValueService, TGenom>> separator)
         {
+            chachedSeparator = separator;
             GetBest(separator);
             GetWorst(separator);
+            return this;
+        }
+
+        public Generation<TValueService, TGenom> MarkAllEntitrsAsParents()
+        {
+            foreach (var entity in generation)
+            {
+                entity.MargAsParent();
+            }
+
             return this;
         }
 
@@ -62,8 +92,24 @@ namespace OPR.SSGA2
 
         private void GetBest(ISeparator<Entity<TValueService, TGenom>> separator)
         {
-            var best = separator.Separate(generation, 2, true).ToList();
-            best.ForEach(x => x.Function = EntityFunction.BestParent);
+            var bestParents = separator.Separate(Parents, 2, true).ToList();
+            bestParents.ForEach(x => x.Function = EntityFunction.BestParent);
+            MarkUpChildern();
+        }
+
+        private void MarkUpChildern()
+        {
+            if (children.Any())
+            {
+                var bestChildren = chachedSeparator.Separate(children, 1, true).ToList();
+                bestChildren.ForEach(x => x.Function = EntityFunction.BestChild);
+
+                for (int i = 0; i < children.Count; i++)
+                {
+                    children[i].GenerationId = Id + 1;
+                    children[i].Id = i + 1;
+                }
+            }
         }
     }
 }

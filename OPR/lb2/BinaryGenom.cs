@@ -8,6 +8,7 @@ using OPR.lb2.Interfaces.Common;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public sealed class BinaryGenom : IGenom
     {
         public readonly int? CrossingPoint;

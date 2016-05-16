@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using OPR.lb2.Interfaces;
 
 namespace OPR.lb2
 {
+    [Obsolete]
     public abstract class Generation<T> where T:IGenom, new ()
     {
         private static int identity = 0;

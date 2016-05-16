@@ -59,7 +59,8 @@ namespace OPR.SSGA2
             var result = new List<int[]>();
             foreach (int[] code in codes)
             {
-                if (GlobalSettings.MutationChance >= RandomHelper.Random(0, 100))
+                var chance = RandomHelper.Random(0, 100);
+                if (GlobalSettings.MutationChance >= chance)
                 {
                     var mutatedCode = cromosomeCreator.Mutate(code);
                     result.Add(mutatedCode);

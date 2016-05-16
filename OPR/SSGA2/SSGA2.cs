@@ -34,12 +34,13 @@ namespace OPR.SSGA2
 
         public List<Generation<TValueService, TGenom>> EvalutionStep()
         {
-            var generation = generations.Last().Entites;
-            var bestEntities = commonSeparator.Separate(generation, 2, true).ToList();
+            var generation = generations.Last();
+            var bestEntities = commonSeparator.Separate(generation.Entites, 2, true).ToList();
             var childs = bestEntities.CreateNewEntities();
-            var nextGeneration = GetNextGeneration(generation, childs);
-            generation.AddRange(childs);
+            var nextGeneration = GetNextGeneration(generation.Entites, childs);
+            generation.AddChildern(childs);
             generations.Add(nextGeneration);
+
             return generations;
         }
 
@@ -50,9 +51,15 @@ namespace OPR.SSGA2
             var source = GetSeparationSource(parents, childrens);
             var bestEntity = commonSeparator.Separate(source, 1, true).First();
             bestEntity.Function = EntityFunction.BestChild;
-            var nextGeneration = parents.ToGeneration().Winners();
-            nextGeneration.Add(bestEntity);
-            return nextGeneration.ToGeneration().MarkUpGenereation(commonSeparator);
+            var nextGeneration = new List<Entity<TValueService,TGenom>>(parents
+                .ToMarkedGeneration(commonSeparator) //Do Not use it anywhere!
+                .Winners()
+                .Select(x => new Entity<TValueService, TGenom>(x)));
+            nextGeneration.Add(new Entity<TValueService, TGenom>(bestEntity));
+            return nextGeneration
+                .ToGeneration()
+                .MarkUpGenereation(commonSeparator)
+                .MarkAllEntitrsAsParents();
         }
 
         private List<Entity<TValueService, TGenom>> GetSeparationSource(
@@ -69,11 +76,13 @@ namespace OPR.SSGA2
 
         private Generation<TValueService, TGenom> GenetateFirstPopulation()
         {
-            var args = Generator.GenerateEntityArgs();
+            var args = Generator.GenerateEntityArgs(GlobalSettings.N);
             var allEntities = args
                 .Select(x => new Entity<TValueService, TGenom>(x)).ToList();
             var validEntites = firstStepSeprator.Separate(allEntities, GlobalSettings.nFromN, true);
-            return validEntites.ToGeneration().MarkUpGenereation(commonSeparator);
+            return validEntites
+                .ToGeneration()
+                .MarkUpGenereation(commonSeparator);
         }
     }
 }

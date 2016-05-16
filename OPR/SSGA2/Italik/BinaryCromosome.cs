@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using OPR.SSGA2.Extension;
 using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2.Italik
 {
     public sealed class BinaryCromosome :  IChromosome
     {
-        private readonly  int intValue = 4; // TODO: move this into Globals
+        private readonly  int intValue = GlobalSettings.MaxIntValueFroCrossing;
         private readonly int integerPatLength;
-        private const int frictionLength = 4;
+        private const int frictionLength = 4; //private settings of BinaryCromosome. Not setted in ui
 
         public BinaryCromosome()
         {
@@ -35,7 +36,7 @@ namespace OPR.SSGA2.Italik
             Array.Copy(code,oneNumberLength, secondPart,0, oneNumberLength);
             var y = ConvertCodePartToFloat(secondPart);
 
-            return new BinaryEntityArgs {X = x, Y = y};
+            return GetNullIfNotValid(new BinaryEntityArgs { X = x, Y = y });
         }
 
         public int[] Mutate(int[] code)
@@ -49,6 +50,14 @@ namespace OPR.SSGA2.Italik
             return result;
         }
 
+        private BinaryEntityArgs GetNullIfNotValid(BinaryEntityArgs args)
+        {
+            return ValidationService.ValidateBounds(args.X, GlobalSettings.LeftXBound, GlobalSettings.RightXBound)
+                   && ValidationService.ValidateBounds(args.Y, GlobalSettings.BottomYBound, GlobalSettings.TopYBound)
+                ? args
+                : null;
+        }
+        
         private BinaryEntityArgs GetArgs(EntityArgs args)
         {
             var binaryArgs = args as BinaryEntityArgs;

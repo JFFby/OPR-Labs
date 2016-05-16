@@ -124,12 +124,11 @@ namespace OPR.KP
 
             var state = new
             {
-                count,
                 state = new Genereate_MKT_Point_Arg {Bounds = bounds, fn = fn}
             };
 
             generator.SetupState(state);
-            return generator.Generate();
+            return generator.Generate(count);
         }
     }
 }
