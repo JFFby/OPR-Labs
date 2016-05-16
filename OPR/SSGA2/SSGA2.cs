@@ -7,7 +7,7 @@ using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2
 {
-    public sealed class SSGA2<TValueService, TGenom> where TValueService : IValueService, new()
+    public class SSGA2<TValueService, TGenom> where TValueService : IValueService, new()
         where TGenom : IGenom, new()
     {
         private readonly ISeparator<Entity<TValueService, TGenom>> firstStepSeprator;

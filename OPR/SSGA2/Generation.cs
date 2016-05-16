@@ -6,7 +6,7 @@ using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2
 {
-    public sealed class Generation<TValueService, TGenom> where TValueService : IValueService, new()
+    public class Generation<TValueService, TGenom> where TValueService : IValueService, new()
         where TGenom : IGenom, new()
     {
         private Entity<TValueService, TGenom> worstEntity;

@@ -4,15 +4,19 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using OPR.KP.MKT_Items;
 using OPR.lb2;
 using OPR.lb2.Enums;
+using OPR.SSGA2;
+using OPR.SSGA2.Italik;
+using BinaryGeneration = OPR.SSGA2.Generation<OPR.SSGA2.Italik.BinaryValueService, OPR.SSGA2.Italik.BinaryGenom>;
 
 namespace Lab2.UI
 {
     public partial class Form1 : Form
     {
         private IList<BinaryGeneration> generations;
-        private SSGA ssga;
+        private BinarySSGA ssga;
         private byte N;
 
         public Form1()
@@ -36,7 +40,7 @@ namespace Lab2.UI
         {
             var isFirstStep = InitializeSSGA();
             generations = isFirstStep
-                 ? ssga.Start()
+                 ?  ssga.Start()
                  : ssga.EvalutionStep();
             OnDataArrived();
         }
@@ -160,7 +164,8 @@ namespace Lab2.UI
                 var randomOrGridStatus = randomOrGridPoint.Checked;
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
-                ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
+                //ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
+                ssga = new BinarySSGA(null, null, null);
                 return true;
             }
 
@@ -173,7 +178,7 @@ namespace Lab2.UI
             chart1.Series[0].SmartLabelStyle.Enabled = true;
             chart1.Series[0].MarkerStep = 1;
             chart1.Series[0].XValueType = ChartValueType.Double;
-            foreach (var entity in generation.Entities)
+            foreach (var entity in generation.Entites)
             {
                 chart1.Series[0].Points.Add(new DataPoint(entity.Genom.X.Value, entity.Genom.Y.Value));
             }
