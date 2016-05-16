@@ -76,7 +76,10 @@
     <Compile Include="lb2\Interfaces\Common\ISeparator.cs" />
     <Compile Include="lb2\Interfaces\Common\ISelection.cs" />
     <Compile Include="lb2\Interfaces\IGenom.cs" />
+    <Compile Include="lb2\Rang.cs" />
+    <Compile Include="lb2\Roulette.cs" />
     <Compile Include="lb2\SSGA.cs" />
+    <Compile Include="lb2\Tournament.cs" />
     <Compile Include="lb2\Сhromosome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="lb1\Square.cs" />

@@ -9,6 +9,8 @@ namespace OPR.SSGA2
     public class Generation<TValueService, TGenom> where TValueService : IValueService, new()
         where TGenom : IGenom, new()
     {
+        private static int identity = 0;
+
         private Entity<TValueService, TGenom> worstEntity;
 
         private List<Entity<TValueService, TGenom>> generation = new List<Entity<TValueService, TGenom>>();
@@ -16,7 +18,16 @@ namespace OPR.SSGA2
         public Generation(List<Entity<TValueService, TGenom>> entities)
         {
             generation = entities;
+            Id = ++identity;
+            
+            for (int i = 0; i < generation.Count; i++)
+            {
+                generation[i].Function = EntityFunction.None;
+                generation[i].Id = i + 1;
+            }
         }
+
+        public int Id { get; set; }
 
         public List<Entity<TValueService, TGenom>> Entites { get { return generation; } }
 
