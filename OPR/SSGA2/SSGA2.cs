@@ -12,12 +12,12 @@ namespace OPR.SSGA2
     {
         private readonly ISeparator<Entity<TValueService, TGenom>> firstStepSeprator;
         private readonly ISeparator<Entity<TValueService, TGenom>> commonSeparator;
-        private readonly IGenerator<EntityArgs> Generator;
+        private readonly IArgsGenerator Generator;
         private readonly List<Generation<TValueService, TGenom>> generations;
 
         public SSGA2(ISeparator<Entity<TValueService, TGenom>> firstStepSeprator,
             ISeparator<Entity<TValueService, TGenom>> commonSeparator,
-            IGenerator<EntityArgs> generator)
+            IArgsGenerator generator)
         {
             this.firstStepSeprator = firstStepSeprator;
             this.commonSeparator = commonSeparator;

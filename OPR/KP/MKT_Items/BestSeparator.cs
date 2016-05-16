@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq; 
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
+using OPR.SSGA2.Interfaces;
 
 namespace OPR.KP.MKT_Items
 {
-    public sealed class BestSeparator : ISeparator<MKT_Point>
+    public sealed class BestSeparator<TValue> : ISeparator<TValue> where TValue: IValue
     {
         private readonly object state;
         
-        public IList<MKT_Point> Separate(IList<MKT_Point> inpuList, int count, bool isAscending)
+        public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
             //var fn = GetFunc(state);
             var sortedInputs = isAscending

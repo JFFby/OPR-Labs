@@ -7,7 +7,7 @@ namespace OPR.SSGA2.Italik
         public BinarySSGA(
             ISeparator<Entity<BinaryValueService, BinaryGenom>> firstStepSeprator,
             ISeparator<Entity<BinaryValueService, BinaryGenom>> commonSeparator,
-            IGenerator<EntityArgs> generator) : base(firstStepSeprator, commonSeparator, generator)
+            IArgsGenerator generator) : base(firstStepSeprator, commonSeparator, generator)
         {
         }
     }

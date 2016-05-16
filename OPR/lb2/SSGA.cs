@@ -74,9 +74,9 @@ namespace OPR.lb2
             stepPoint[0] = interval_x[0];
             stepPoint[1] = interval_y[0];
             var entites = new List<Entity<BinaryGenom>>();
-            step = (randomOrGrid) ?
-                step :
-                GridPointsHelper.getStepOfGrid((interval_x[1] - interval_x[0]), (interval_y[1] - interval_y[0]), N);
+            //step = (randomOrGrid) ?
+            //    step :
+            //    GridPointsHelper.getStepOfGrid((interval_x[1] - interval_x[0]), (interval_y[1] - interval_y[0]), N); 
 
             for (int i = 0; i < N; i++)
             {

@@ -1,9 +1,10 @@
 ﻿using System;
 using OPR.lb1;
+using OPR.SSGA2.Interfaces;
 
 namespace OPR.KP.MKT_Items
 {
-    public sealed class MKT_Point : SquarePoint
+    public sealed class MKT_Point : SquarePoint, IValue
     {
         private static int id;
 

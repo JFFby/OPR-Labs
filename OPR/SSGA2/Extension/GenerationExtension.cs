@@ -25,5 +25,12 @@ namespace OPR.SSGA2.Extension
         {
             return new SSGA2.Generation<TValueService, TGenom>(entities.ToList());
         }
+
+        public static int GetChilrensCrossingPoint<TValueService, TGenom>(this Generation<TValueService, TGenom> generation)
+           where TValueService : IValueService, new() where TGenom : IGenom, new()
+        {
+            var firstchild = generation.Children.FirstOrDefault();
+            return firstchild != null && firstchild.CrossPoint.HasValue ? -firstchild.CrossPoint.Value : -1;
+        }
     }
 }

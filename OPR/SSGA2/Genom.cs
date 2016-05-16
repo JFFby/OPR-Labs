@@ -22,14 +22,14 @@ namespace OPR.SSGA2
             {
                 var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
                 var firstChild = CrossCode(_code, secondCode, crossingPoint);
-                AddIfValid(result, firstChild, EntityType.Child);
+                AddIfValid(result, firstChild, EntityType.Child, crossingPoint);
                 var secondChild = CrossCode(secondCode, _code, crossingPoint);
-                AddIfValid(result, secondChild, EntityType.Child);
+                AddIfValid(result, secondChild, EntityType.Child, crossingPoint);
 
                 var mutationResult = Mutation(firstChild, secondChild);
                 foreach (var i in mutationResult)
                 {
-                    AddIfValid(result, i, EntityType.Mutant);
+                    AddIfValid(result, i, EntityType.Mutant, crossingPoint);
                 }
             }
             else
@@ -37,16 +37,16 @@ namespace OPR.SSGA2
                 var mutationResult = Mutation(_code, secondCode);
                 if (mutationResult.Any())
                 {
+                    var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
                     foreach (var i in mutationResult)
                     {
-                        AddIfValid(result, i, EntityType.Mutant);
+                        AddIfValid(result, i, EntityType.Mutant, crossingPoint);
                     }
 
-                    var crossingPoint = RandomHelper.Random(2, secondCode.Length - 2);
                     var firstChild = CrossCode(mutationResult[0], mutationResult[1], crossingPoint);
-                    AddIfValid(result, firstChild, EntityType.Child);
+                    AddIfValid(result, firstChild, EntityType.Child, crossingPoint);
                     var secondChild = CrossCode(mutationResult[1], mutationResult[0], crossingPoint);
-                    AddIfValid(result, secondChild, EntityType.Child);
+                    AddIfValid(result, secondChild, EntityType.Child, crossingPoint);
                 }
             }
 
@@ -69,7 +69,7 @@ namespace OPR.SSGA2
             return result.ToArray();
         }
 
-        private void AddIfValid(IList<CreationResult> result, int[] code, EntityType type)
+        private void AddIfValid(IList<CreationResult> result, int[] code, EntityType type, int crossingPoint)
         {
             var args = cromosomeCreator.CodeToEntityArgs(code);
             if (args != null)
@@ -77,7 +77,8 @@ namespace OPR.SSGA2
                 result.Add(new CreationResult
                 {
                     Type = type,
-                    Args = args
+                    Args = args,
+                    CrossingPoint = crossingPoint
                 });
             }
         }

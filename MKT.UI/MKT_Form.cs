@@ -33,7 +33,7 @@ namespace MKT.UI
                 Generator = new RandomGenerator(null),
                 Lambda = 4,
                 Iterations = 10,
-                Separator = new BestSeparator()
+                Separator = new BestSeparator<MKT_Point>()
             };
             var name = config.ToString();
             mkt = new OPR.KP.MKT(config);

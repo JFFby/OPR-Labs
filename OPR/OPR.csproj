@@ -95,7 +95,9 @@
     <Compile Include="SSGA2\Interfaces\IChromosome.cs" />
     <Compile Include="SSGA2\Interfaces\IConverter.cs" />
     <Compile Include="SSGA2\Interfaces\IGenom.cs" />
+    <Compile Include="SSGA2\Interfaces\IValue.cs" />
     <Compile Include="SSGA2\Interfaces\IValueService.cs" />
+    <Compile Include="SSGA2\Italik\BinaryArgsConverter.cs" />
     <Compile Include="SSGA2\Italik\BinaryCromosome.cs" />
     <Compile Include="SSGA2\Italik\BinaryGeneration.cs" />
     <Compile Include="SSGA2\Italik\BinaryGenom.cs" />

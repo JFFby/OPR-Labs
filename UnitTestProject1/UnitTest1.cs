@@ -77,7 +77,7 @@ namespace UnitTestProject1
                 Generator = new RandomGenerator(null),
                 Lambda = 4,
                 Iterations = 10,
-                Separator = new BestSeparator()
+                Separator = new BestSeparator<MKT_Point>()
             };
         }
 

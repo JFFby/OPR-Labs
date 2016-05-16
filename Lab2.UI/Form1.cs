@@ -8,8 +8,12 @@ using OPR.KP.MKT_Items;
 using OPR.lb2;
 using OPR.lb2.Enums;
 using OPR.SSGA2;
+using OPR.SSGA2.Extension;
+using OPR.SSGA2.Interfaces;
 using OPR.SSGA2.Italik;
 using BinaryGeneration = OPR.SSGA2.Generation<OPR.SSGA2.Italik.BinaryValueService, OPR.SSGA2.Italik.BinaryGenom>;
+using BinaryGenom = OPR.SSGA2.Italik.BinaryGenom;
+
 
 namespace Lab2.UI
 {
@@ -40,7 +44,7 @@ namespace Lab2.UI
         {
             var isFirstStep = InitializeSSGA();
             generations = isFirstStep
-                 ?  ssga.Start()
+                 ? ssga.Start()
                  : ssga.EvalutionStep();
             OnDataArrived();
         }
@@ -65,10 +69,10 @@ namespace Lab2.UI
 
                 if (binaryGeneration.Children != null && binaryGeneration.Children.Any())
                 {
-                    var groups = binaryGeneration.Children.OfType<BinaryEntity>().GroupBy(x => x.Genom.Type);
+                    var groups = binaryGeneration.Children.GroupBy(x => x.Type);
                     foreach (var group in groups)
                     {
-                        DrawLineChildrenSeparator(GetGroupMsg(group.Key, binaryGeneration.GrossPoint.ToString()));
+                        DrawLineChildrenSeparator(GetGroupMsg(group.Key, binaryGeneration.GetChilrensCrossingPoint().ToString()));
                         foreach (var item in group)
                         {
                             CreateRow(item, binaryGeneration.Id.ToString());
@@ -88,14 +92,14 @@ namespace Lab2.UI
             return type.ToString();
         }
 
-        private void CreateRow(BinaryEntity entity, string geneId)
+        private void CreateRow(Entity<BinaryValueService, OPR.SSGA2.Italik.BinaryGenom> entity, string geneId)
         {
             var row = GetColorizedRow(entity.Function);
             row.Cells.AddRange(Cells(row.DefaultCellStyle.BackColor).ToArray());
             row.Cells[0].Value = string.Format("{0}.{1}", geneId, entity.Id);
-            row.Cells[1].Value = entity.Genom.X.Value;
-            row.Cells[2].Value = entity.Genom.Y.Value;
-            row.Cells[3].Value = entity.Genom.Code;
+            row.Cells[1].Value = entity.X();
+            row.Cells[2].Value = entity.Y();
+            row.Cells[3].Value = entity.Code;
             row.Cells[4].Value = entity.Value;
             dataGridView1.Rows.Add(row);
         }
@@ -165,7 +169,10 @@ namespace Lab2.UI
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
                 //ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
-                ssga = new BinarySSGA(null, null, null);
+                ssga = new BinarySSGA(
+                    new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
+                    new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
+                    new RandomGenerator(new BinaryArgsConverter()));
                 return true;
             }
 
@@ -180,7 +187,7 @@ namespace Lab2.UI
             chart1.Series[0].XValueType = ChartValueType.Double;
             foreach (var entity in generation.Entites)
             {
-                chart1.Series[0].Points.Add(new DataPoint(entity.Genom.X.Value, entity.Genom.Y.Value));
+                chart1.Series[0].Points.Add(new DataPoint(entity.X(), entity.Y()));
             }
         }
 
@@ -235,7 +242,7 @@ namespace Lab2.UI
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-        
+
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)

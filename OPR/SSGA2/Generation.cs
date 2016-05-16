@@ -19,12 +19,22 @@ namespace OPR.SSGA2
         {
             generation = entities;
             Id = ++identity;
-            
+
             for (int i = 0; i < generation.Count; i++)
             {
                 generation[i].Function = EntityFunction.None;
                 generation[i].Id = i + 1;
             }
+        }
+
+        public List<Entity<TValueService, TGenom>> Parents
+        {
+            get { return generation.Where(x => x.Type == EntityType.Parent).ToList(); }
+        }
+
+        public List<Entity<TValueService, TGenom>> Children
+        {
+            get { return generation.Where(x => x.Type == EntityType.Child).ToList(); }
         }
 
         public int Id { get; set; }

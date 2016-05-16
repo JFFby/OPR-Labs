@@ -5,17 +5,17 @@ using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2
 {
-    public sealed class Entity<TValueService, TGenom> where TValueService : IValueService, new()
-        where TGenom : IGenom, new()
+    public sealed class Entity<TValueService, TGenom> : IValue where TValueService : IValueService, new()
+        where TGenom : IGenom, new() 
     {
-        private readonly EntityArgs args;
+        public  readonly EntityArgs Args;
         private readonly IGenom genom;
 
         private float? value;
 
         public Entity(EntityArgs args)
         {
-            this.args = args;
+            this.Args = args;
             genom = new TGenom();
             genom.Initializae(args);
             Type = EntityType.Parent;
@@ -25,9 +25,12 @@ namespace OPR.SSGA2
         public Entity(CreationResult result): this(result.Args)
         {
             Type = result.Type;
+            CrossPoint = result.CrossingPoint;
         } 
 
         public string Code { get { return genom.Code; } }
+
+        public int? CrossPoint { get; set; }
 
         public EntityType Type { get; private set; }
 
@@ -42,7 +45,7 @@ namespace OPR.SSGA2
                 if (!value.HasValue)
                 {
                     TValueService service = new TValueService();
-                    value = service.Value(args);
+                    value = service.Value(Args);
                 }
 
                 return value.Value;
@@ -51,7 +54,7 @@ namespace OPR.SSGA2
 
         public List<Entity<TValueService, TGenom>> CreateChildEntity(Entity<TValueService, TGenom> entity)
         {
-            return genom.CreateNewGenerationEntity(entity.args)
+            return genom.CreateNewGenerationEntity(entity.Args)
                 .Select(result => new Entity<TValueService, TGenom>(result))
                 .ToList();
         }

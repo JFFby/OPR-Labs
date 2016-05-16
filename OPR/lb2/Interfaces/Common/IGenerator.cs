@@ -3,12 +3,15 @@ using OPR.SSGA2;
 
 namespace OPR.lb2.Interfaces.Common
 {
-    public interface IGenerator<T>
+    public interface IGenerator<T> : IArgsGenerator
     {
         IList<T> Generate();
-
-        IList<EntityArgs> GenerateEntityArgs();
-
+        
         void SetupState(dynamic state);
+    }
+
+    public interface IArgsGenerator
+    {
+        IList<EntityArgs> GenerateEntityArgs();
     }
 }

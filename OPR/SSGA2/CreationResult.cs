@@ -7,5 +7,7 @@ namespace OPR.SSGA2
         internal EntityArgs Args { get; set; }
 
         internal EntityType Type { get; set; }
+
+        internal int? CrossingPoint { get; set; }
     }
 }
