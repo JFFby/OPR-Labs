@@ -5,7 +5,7 @@ namespace OPR.SSGA2
     public static class GlobalSettings
     {
         #region Common Settings
-        public static int isRandomOrGridPoints { get; set; }
+        public static bool isRandomOrGridPoints { get; set; }
 
         public static int firstSelectionVariant { get; set; }
 

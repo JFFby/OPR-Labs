@@ -13,7 +13,7 @@ namespace OPR.lb2
         public IConverter converter;
         public object state;
 
-        public void RandomGenerator(IConverter converter)
+        public GridPointsHelper(IConverter converter)
         {
             this.converter = converter;
         }
@@ -25,7 +25,8 @@ namespace OPR.lb2
 
         public void SetupState(dynamic state)
         {
-            this.state = state.state;
+            var property = state.GetType().GetProperty("state");
+            this.state = property.GetValue(state);
         }
 
         private Genereate_MKT_Point_Arg GetBounds()
@@ -43,14 +44,14 @@ namespace OPR.lb2
         {
             var points = new List<MKT_Point>();
             var bounds = GetBounds();
-            var pointN = GlobalSettings.N;
+            var pointN = count;
 
             float[] stepPoint = new float[2];
             stepPoint[0] = bounds.Bounds[0].x;
             stepPoint[1] = bounds.Bounds[0].y;
 
-            float width = bounds.Bounds[0].x + bounds.Bounds[1].x;
-            float height = bounds.Bounds[0].y + bounds.Bounds[1].y;
+            float width = bounds.Bounds[1].x - bounds.Bounds[0].x;
+            float height = bounds.Bounds[1].y - bounds.Bounds[0].y;
 
             float widthLineCount = 0, heightLineCount = 0;
             float[] arrayStep = new float[2];

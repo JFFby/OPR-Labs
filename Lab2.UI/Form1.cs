@@ -168,46 +168,69 @@ namespace Lab2.UI
             {
                 var pNu = byte.Parse(pNuTextbox.Text);
                 N = byte.Parse(TextboxN.Text);
-                var randomOrGridStatus = randomOrGridPoint.Checked;
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
 
-                GlobalSettings.N = 20;
+                GlobalSettings.N = int.Parse(TextboxN.Text);
                 GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
                 GlobalSettings.IsBestFromChildernOnly = true;
                 GlobalSettings.IsCrossingFirst = true;
-                GlobalSettings.MutationChance = 7;
-                GlobalSettings.isRandomOrGridPoints = 1; //not obviously!
-                GlobalSettings.nFromN = 10;
-                GlobalSettings.LeftXBound = -4;
-                GlobalSettings.RightXBound = 4;
-                GlobalSettings.TopYBound = 4;
-                GlobalSettings.BottomYBound = -4;
-                GlobalSettings.MaxIntValueFroCrossing = 4;
+                GlobalSettings.MutationChance = int.Parse(pNuTextbox.Text);
+                GlobalSettings.nFromN = int.Parse(nTextBox.Text);
+                GetBounds();
 
-                var generator = new RandomGenerator(new BinaryArgsConverter());
-                generator.SetupState((dynamic)new
-                {
-                    state = new Genereate_MKT_Point_Arg
-                    {
-                        Bounds = new SquarePoint[]
-                        {
-                            new SquarePoint(GlobalSettings.LeftXBound, GlobalSettings.BottomYBound),
-                            new SquarePoint(GlobalSettings.RightXBound, GlobalSettings.TopYBound)
-                        },
-                        fn = GlobalSettings.Fn
-                    }
-                });
-
-                ssga = new BinarySSGA(
+               ssga = new BinarySSGA(
                    GetFirstSeparator(),
                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                    generator);
+                    GetGenerator());
                 return true;
             }
 
             return false;
         }
+
+        private IGenerator<MKT_Point> GetGenerator()
+        {
+            GlobalSettings.isRandomOrGridPoints = randomOrGridPoint.Checked;
+            var generator = GlobalSettings.isRandomOrGridPoints
+                ? (IGenerator<MKT_Point>) new RandomGenerator(new BinaryArgsConverter())
+                : (IGenerator<MKT_Point>)new GridPointsHelper(new BinaryArgsConverter());
+
+            generator.SetupState((dynamic)new
+            {
+                state = GetState()
+            });
+
+            return generator;
+        }
+
+        private Genereate_MKT_Point_Arg GetState()
+        {
+            return new Genereate_MKT_Point_Arg
+            {
+                Bounds = new SquarePoint[]
+                {
+                    new SquarePoint(GlobalSettings.LeftXBound, GlobalSettings.BottomYBound),
+                    new SquarePoint(GlobalSettings.RightXBound, GlobalSettings.TopYBound)
+                },
+                fn = GlobalSettings.Fn
+            };
+        }
+
+        private void GetBounds()
+        {
+            GlobalSettings.LeftXBound = BoundsX()[0];
+            GlobalSettings.RightXBound = BoundsX()[1];
+            GlobalSettings.BottomYBound = BoundsY()[0];
+            GlobalSettings.TopYBound = BoundsY()[1];
+
+            GlobalSettings.MaxIntValueFroCrossing = (int) Math.Round(
+                Math.Max(
+                    Math.Max(Math.Abs(GlobalSettings.LeftXBound), Math.Abs(GlobalSettings.RightXBound)),
+                    Math.Max(Math.Abs(GlobalSettings.BottomYBound), Math.Abs(GlobalSettings.TopYBound))));
+        }
+
+
 
         private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
         {
