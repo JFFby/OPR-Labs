@@ -6,12 +6,18 @@ using System;
 
 namespace OPR.lb2
 {
-    public class Roulette: ISeparator<IValue>
+    public class Roulette<TValue> : ISeparator<TValue> where TValue : IValue
     {
-        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
+        public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
+            if (inpuList.Count == count)
+            {
+                return inpuList;
+            }
+
             float summ = 0, procent = 0;
-            int length = inpuList.Count;
+            var items = GetRouletteItem(inpuList);
+            int length = items.Count;
             float[] array = new float[length + 1]; array[0] = 0;
             float[] id = new float[count];
             for (var i = 0; i < count; ++i)
@@ -20,16 +26,16 @@ namespace OPR.lb2
             }
 
             float value = 0;
-            foreach (var el in inpuList)
+            foreach (var el in items)
             {
-                summ += el.Value;
+                summ += el.Entity.Value;
             }
 
             procent = 360 / summ;
-            foreach (var el in inpuList)
+            foreach (var el in items)
             {
-                value += el.Value * procent;
-                array[el.Id] = value;
+                value += el.Entity.Value * procent;
+                array[el.RouletteItemId] = value;
             }
 
             var num = 0;
@@ -51,13 +57,32 @@ namespace OPR.lb2
                 }
             }
 
-            IList<IValue> roulette = new List<IValue>();
+            IList<RouletteItem<TValue>> roulette = new List<RouletteItem<TValue>>();
 
             for (var i = 0; i < count; ++i)
             {
-                roulette.Add(inpuList.Where(x => x.Id == id[i]).ToList()[0]);
+                roulette.Add(items.Where(x => x.RouletteItemId == id[i]).ToList()[0]);
             }
-            return roulette;
+
+            return roulette.Select(x => x.Entity).ToList();
         }
+
+        private List<RouletteItem<TValue>> GetRouletteItem<TValue>(IEnumerable<TValue> entities) where TValue : IValue
+        {
+            return entities.Select((x, i) => new RouletteItem<TValue>(x, i)).ToList();
+        }
+    }
+
+    public class RouletteItem<TValue> where TValue : IValue
+    {
+        public RouletteItem(TValue entity, int i)
+        {
+            Entity = entity;
+            RouletteItemId = i;
+        }
+
+       public TValue Entity { get; set; }
+
+        public int RouletteItemId { get; set; }
     }
 }

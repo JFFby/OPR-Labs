@@ -1,16 +1,17 @@
-﻿using OPR.lb2.Interfaces.Common;
+﻿using System;
+using OPR.lb2.Interfaces.Common;
 using System.Collections.Generic;
 using System.Linq;
 using OPR.SSGA2.Interfaces;
 
 namespace OPR.lb2
 {
-    public class Rang : ISeparator<IValue>
+    public class Rang<TValue> : ISeparator<TValue> where TValue : IValue
     {
 
-        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
+        public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
-            int[] arrayOfKey = new int[count];
+            int[] arrayOfKey = new int[Math.Max(count, 3)];
             arrayOfKey[0] = 1;
             arrayOfKey[1] = 3;
             arrayOfKey[2] = 2;
@@ -21,7 +22,7 @@ namespace OPR.lb2
 
             var binaryGeneration = inpuList.OrderBy(o => o.Value).ToList();
 
-            List<IValue> rang = new List<IValue>();
+            List<TValue> rang = new List<TValue>();
 
             for (var i = 0; rang.Count < count; ++i)
             {
@@ -30,6 +31,7 @@ namespace OPR.lb2
                     rang.Add(binaryGeneration.ToList()[i]);
                 }
             }
+
             return rang;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OPR.KP.MKT_Items;
 using OPR.KP.Shlp;
 using OPR.KP.Shlp.NelderMid;
@@ -33,11 +34,29 @@ namespace OPR.KP.SSGA_MKT_Items
                 n = RandomHelper.Random(3, 9),
                 N = RandomHelper.Random(9, 25),
                 Generator = GetGenerator(),
-                Separator = new BestSeparator<MKT_Point>(),
+                Separator = GetSeparator(),
                 Shlp = GetShlp(iterationMode),
                 Lambda = (byte)RandomHelper.Random(3, 9),
                 IterationMode = iterationMode
             };
+        }
+
+        private ISeparator<MKT_Point> GetSeparator()
+        {
+            var separatorType = RandomHelper.Random(0, 100) % 4;
+            switch (separatorType)
+            {
+                case 0:
+                    return new Roulette<MKT_Point>();
+                case 1:
+                    return new BestSeparator<MKT_Point>(); //new Tournament<MKT_Point>();
+                case 2:
+                    return new Rang<MKT_Point>();
+                case 3:
+                    return new BestSeparator<MKT_Point>();
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         private IShlpWrapper GetShlp(MktIterationMode iterationMode)

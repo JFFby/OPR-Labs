@@ -235,17 +235,17 @@ namespace Lab2.UI
                     Math.Max(Math.Abs(GlobalSettings.BottomYBound), Math.Abs(GlobalSettings.TopYBound))));
         }
 
-        private ISeparator<IValue> GetFirstSeparator()
+        private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
         {
             GlobalSettings.firstSelectionVariant = comboBox1.SelectedIndex;
             switch (GlobalSettings.firstSelectionVariant)
             {
                 case 0:
-                    return new Roulette();
+                    return new Roulette<Entity<BinaryValueService, BinaryGenom>>();
                 case 1:
-                    return new Tournament();
+                    return new Tournament<Entity<BinaryValueService, BinaryGenom>>();
                 case 2:
-                    return new Rang();
+                    return new Rang<Entity<BinaryValueService, BinaryGenom>>();
                 default:
                     throw new ArgumentException();
             }

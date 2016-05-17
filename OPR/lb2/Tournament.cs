@@ -5,15 +5,15 @@ using OPR.SSGA2.Interfaces;
 
 namespace OPR.lb2
 {
-    public class Tournament: ISeparator<IValue>
+    public class Tournament<TValue> : ISeparator<TValue> where TValue : IValue
     {
-        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
+        public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
             int evenPair = 0;
             int oddPair = 0;
             int currentCount = count;
-            IList<IValue> tournament = new List<IValue>();
-            IList<IValue>[] tournamentPart;
+            IList<TValue> tournament = new List<TValue>();
+            IList<TValue>[] tournamentPart;
 
 
             while(inpuList.Count % currentCount != 0) {
@@ -22,11 +22,11 @@ namespace OPR.lb2
             }
             evenPair = inpuList.Count / 2;
 
-            tournamentPart = new List<IValue>[evenPair + oddPair];
+            tournamentPart = new List<TValue>[evenPair + oddPair];
             
             for (int i = 0, j = 0; i < evenPair; ++i)
             {
-                tournamentPart[i] = new List<IValue>();
+                tournamentPart[i] = new List<TValue>();
                 for (var k = 0; k < 2; ++k, ++j)
                 {
                     tournamentPart[i].Add(inpuList[j]);
