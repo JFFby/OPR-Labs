@@ -78,7 +78,7 @@ namespace OPR.SSGA2
         {
             var args = Generator.GenerateEntityArgs(GlobalSettings.N);
             var allEntities = args
-                .Select(x => new Entity<TValueService, TGenom>(x)).ToList();
+                .Select(x => new Entity<TValueService, TGenom>(x)).ToList().SetIds();
             var validEntites = firstStepSeprator.Separate(allEntities, GlobalSettings.nFromN, true);
             return validEntites
                 .ToGeneration()

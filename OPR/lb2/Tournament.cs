@@ -15,7 +15,6 @@ namespace OPR.lb2
             int oddPair = 0;
             int currentCount = count;
             IList<Entity<TValueService, TGenom>> tournament = new List<Entity<TValueService, TGenom>>();
-            IList<Entity<TValueService, TGenom>> roulette = new List<Entity<TValueService, TGenom>>();
             IList<Entity<TValueService, TGenom>>[] tournamentPart;
 
 
@@ -23,7 +22,7 @@ namespace OPR.lb2
                 ++oddPair;
                 currentCount -= 3;
             }
-            evenPair = inpuList.Count / currentCount;
+            evenPair = inpuList.Count / 2;
 
             tournamentPart = new List<Entity<TValueService, TGenom>>[evenPair + oddPair];
             

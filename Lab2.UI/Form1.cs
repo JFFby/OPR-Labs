@@ -8,6 +8,7 @@ using OPR.KP.MKT_Items;
 using OPR.lb1;
 using OPR.lb2;
 using OPR.lb2.Enums;
+using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
 using OPR.SSGA2.Extension;
 using OPR.SSGA2.Interfaces;
@@ -45,8 +46,8 @@ namespace Lab2.UI
         {
             var isFirstStep = InitializeSSGA();
             generations = isFirstStep
-                 ? ssga.Start()
-                 : ssga.EvalutionStep();
+                ? ssga.Start()
+                : ssga.EvalutionStep();
             OnDataArrived();
         }
 
@@ -73,7 +74,8 @@ namespace Lab2.UI
                     var groups = binaryGeneration.Children.GroupBy(x => x.Type);
                     foreach (var group in groups)
                     {
-                        DrawLineChildrenSeparator(GetGroupMsg(group.Key, binaryGeneration.GetChilrensCrossingPoint().ToString()));
+                        DrawLineChildrenSeparator(GetGroupMsg(group.Key,
+                            binaryGeneration.GetChilrensCrossingPoint().ToString()));
                         foreach (var item in group)
                         {
                             CreateRow(item);
@@ -169,14 +171,12 @@ namespace Lab2.UI
                 var randomOrGridStatus = randomOrGridPoint.Checked;
                 var n = byte.Parse(nTextBox.Text);
                 BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
-                //ssga = new SSGA(BoundsX(), BoundsY(), N, n, randomOrGridStatus, comboBox1.SelectedIndex);
 
                 GlobalSettings.N = 20;
                 GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
                 GlobalSettings.IsBestFromChildernOnly = true;
                 GlobalSettings.IsCrossingFirst = true;
                 GlobalSettings.MutationChance = 7;
-                GlobalSettings.firstSelectionVariant = 1; //What is it? :)
                 GlobalSettings.isRandomOrGridPoints = 1; //not obviously!
                 GlobalSettings.nFromN = 10;
                 GlobalSettings.LeftXBound = -4;
@@ -186,7 +186,7 @@ namespace Lab2.UI
                 GlobalSettings.MaxIntValueFroCrossing = 4;
 
                 var generator = new RandomGenerator(new BinaryArgsConverter());
-                generator.SetupState((dynamic) new
+                generator.SetupState((dynamic)new
                 {
                     state = new Genereate_MKT_Point_Arg
                     {
@@ -198,15 +198,31 @@ namespace Lab2.UI
                         fn = GlobalSettings.Fn
                     }
                 });
-                
+
                 ssga = new BinarySSGA(
+                   GetFirstSeparator(),
                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                    new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                     generator);
+                    generator);
                 return true;
             }
 
             return false;
+        }
+
+        private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
+        {
+            GlobalSettings.firstSelectionVariant = comboBox1.SelectedIndex;
+            switch (GlobalSettings.firstSelectionVariant)
+            {
+                case 0:
+                    return new Roulette<BinaryValueService, BinaryGenom>();
+                case 1:
+                    return new Tournament<BinaryValueService, BinaryGenom>();
+                case 2:
+                    return new Rang<BinaryValueService, BinaryGenom>();
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         private void UpdateChart(BinaryGeneration generation)

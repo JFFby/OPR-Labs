@@ -10,10 +10,10 @@ namespace OPR.SSGA2.Extension
         public static List<Entity<TValueService, TGenom>> CreateNewEntities<TValueService, TGenom>(this List<Entity<TValueService, TGenom>> bestEntities)
             where TValueService : IValueService, new() where TGenom : IGenom, new()
         {
-            if (bestEntities.Count != 2)
-            {
-                throw new KeyNotFoundException();
-            }
+            //if (bestEntities.Count != 2)
+            //{
+            //    throw new KeyNotFoundException();
+            //}
 
             var first = bestEntities.First();
             var second = bestEntities[1];
@@ -40,6 +40,17 @@ namespace OPR.SSGA2.Extension
         {
             var firstchild = generation.Children.FirstOrDefault();
             return firstchild != null && firstchild.CrossPoint.HasValue ? -firstchild.CrossPoint.Value : -1;
+        }
+
+        public static List<Entity<TValueService, TGenom>> SetIds<TValueService, TGenom>(this List<Entity<TValueService, TGenom>> entites)
+           where TValueService : IValueService, new() where TGenom : IGenom, new()
+        {
+            for (int i = 0; i < entites.Count; i++)
+            {
+                entites[i].Id = i + 1;
+            }
+
+            return entites;
         }
     }
 }
