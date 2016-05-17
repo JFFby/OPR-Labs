@@ -1,5 +1,6 @@
 ﻿using System;
 using OPR.KP.MKT_Items;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
 
 namespace OPR.KP.Shlp
@@ -8,7 +9,7 @@ namespace OPR.KP.Shlp
     {
         private readonly ShlpHyperCubeConfig config;
 
-        public HyperCubeWrapper(Func<float,float,float> fn, SquarePoint[] bounds)
+        public HyperCubeWrapper(Func<float,float,float> fn, SquarePoint[] bounds, MktIterationMode iterationMode)
         {
             this.config =  new ShlpHyperCubeConfig
             {
@@ -17,7 +18,8 @@ namespace OPR.KP.Shlp
                 InnerPointsCount = 5,
                 SideLength = 1,
                 IterationCount = 15,
-                Bounds = bounds
+                Bounds = bounds,
+                IterationMode = iterationMode
             };
         }
 
@@ -30,7 +32,8 @@ namespace OPR.KP.Shlp
               config.IterationCount,
               config.InnerPointsCount,
               config.Bounds,
-              config.Fn);
+              config.Fn,
+              config.IterationMode);
         }
 
         public ShlpType ShlpType { get {return ShlpType.HyperCube;} }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using OPR.KP.Shlp;
+using OPR.KP.SSGA_MKT_Items;
 
 namespace OPR.lb1
 {
@@ -19,12 +20,13 @@ namespace OPR.lb1
             int iterationCount,
             int innerPointsCount,
             SquarePoint[] bounds,
+            MktIterationMode iterationMode,
             bool isDebugMode = false)
         {
             this.deltaSideLength = deltaSideLenth;
             this.startPoint = startpoint;
             this.sideLength = sideLength;
-            this.iterationCount = iterationCount;
+            this.iterationCount = iterationMode == MktIterationMode.Full ? iterationCount : 2;
             this.innerPointsCount = innerPointsCount;
             this.isDebugMode = isDebugMode;
             this.bounds = bounds;

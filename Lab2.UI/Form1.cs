@@ -216,11 +216,7 @@ namespace Lab2.UI
         {
             return new Genereate_MKT_Point_Arg
             {
-                Bounds = new SquarePoint[]
-                {
-                    new SquarePoint(GlobalSettings.LeftXBound, GlobalSettings.BottomYBound),
-                    new SquarePoint(GlobalSettings.RightXBound, GlobalSettings.TopYBound)
-                },
+                Bounds = GlobalSettings.GetBounds(),
                 fn = GlobalSettings.Fn
             };
         }

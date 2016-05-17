@@ -1,4 +1,5 @@
 ﻿using System;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
 
 namespace OPR.KP.MKT_Items
@@ -16,5 +17,7 @@ namespace OPR.KP.MKT_Items
         public Func<float, float, float> Fn { get; set; }
 
         public SquarePoint[] Bounds { get; set; }
+
+        public MktIterationMode IterationMode { get; set; }
     }
 }

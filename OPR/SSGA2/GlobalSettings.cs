@@ -1,4 +1,5 @@
 ﻿using System;
+using OPR.lb1;
 
 namespace OPR.SSGA2
 {
@@ -30,6 +31,15 @@ namespace OPR.SSGA2
         public static float BottomYBound { get; set; }
 
         public static int SSGAIterationCount { get; set; }
+
+        public static SquarePoint[] GetBounds()
+        {
+            return new SquarePoint[]
+            {
+                new SquarePoint(LeftXBound, BottomYBound),
+                new SquarePoint(RightXBound, TopYBound)
+            };
+        }
         #endregion
 
         #region BinaryRegion

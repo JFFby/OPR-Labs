@@ -6,8 +6,9 @@ using OPR.KP.Logger;
 using OPR.KP.MKT_Items;
 using OPR.KP.Shlp;
 using OPR.KP.Shlp.NelderMid;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
-using OPR.lb2;
+using OPR.SSGA2;
 
 namespace UnitTestProject1
 {
@@ -19,8 +20,8 @@ namespace UnitTestProject1
         {
             var startPoint = new SquarePoint(1, 1);
             var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
-            var hc = new ShlpHyperCube(startPoint, 1, 1.1f, 15, 10, bounds, MultiplicationCoord);
-            var nm = new NelderMid(new MKT_Point(startPoint.x, startPoint.y, MultiplicationCoord), MultiplicationCoord, bounds);
+            var hc = new ShlpHyperCube(startPoint, 1, 1.1f, 15, 10, bounds, MultiplicationCoord, MktIterationMode.Limited);
+            var nm = new NelderMid(new MKT_Point(startPoint.x, startPoint.y, MultiplicationCoord), MultiplicationCoord, bounds, MktIterationMode.Limited);
             var watch1 = Stopwatch.StartNew();
             var hsResult = hc.Calculate();
             watch1.Stop();
@@ -39,8 +40,8 @@ namespace UnitTestProject1
             var fn = fn_exp.Compile();
             var startPoint = new SquarePoint(1, 1);
             var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
-            var hc = new ShlpHyperCube(startPoint, 1, 1.1f, 25, 10, bounds, fn);
-            var nm = new NelderMid(new MKT_Point(startPoint.x, startPoint.y, fn), fn, bounds);
+            var hc = new ShlpHyperCube(startPoint, 1, 1.1f, 25, 10, bounds, fn, MktIterationMode.Limited);
+            var nm = new NelderMid(new MKT_Point(startPoint.x, startPoint.y, fn), fn, bounds, MktIterationMode.Limited);
             var watch1 = Stopwatch.StartNew();
             var hsResult = hc.Calculate();
             watch1.Stop();
@@ -64,19 +65,20 @@ namespace UnitTestProject1
         {
 
             var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
-            var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds);
+            var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds, MktIterationMode.Full);
             var N_Bounds = new[] { 5, 10 };
             var n_Bounds = new int[] { 3, 5 };
+            GlobalSettings.LeftXBound = 0;
+            GlobalSettings.RightXBound = 4.2f;
+            GlobalSettings.BottomYBound = 0;
+            GlobalSettings.TopYBound = 6.4f;
             return new MKT_Config
             {
                 n = lambda,// RandomHelper.Random(n_Bounds[0], n_Bounds[1]),
                 N = 3,//RandomHelper.Random(N_Bounds[0], N_Bounds[1]),
-                Bounds = bounds,
-                Fn = MultiplicationCoord,
                 Shlp = shlp,
                 Generator = new RandomGenerator(null),
                 Lambda = 4,
-                Iterations = 10,
                 Separator = new BestSeparator<MKT_Point>()
             };
         }

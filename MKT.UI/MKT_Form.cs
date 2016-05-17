@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using OPR.KP.MKT_Items;
-using OPR.KP.Shlp.NelderMid;
-using OPR.lb1;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb2;
+using OPR.SSGA2;
 
 namespace MKT.UI
 {
@@ -18,24 +19,15 @@ namespace MKT.UI
         {
             InitializeComponent();
             KeyPreview = true;
-            var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
-            //var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds);
-            var shlp = new NelderMidWrapper(MultiplicationCoord, bounds);
-            var N_Bounds = new[] { 5, 10 };
-            var n_Bounds = new int[] { 3, 5 };
-            var config = new MKT_Config
-            {
-                n = RandomHelper.Random(n_Bounds[0], n_Bounds[1]),
-                N = RandomHelper.Random(N_Bounds[0], N_Bounds[1]),
-                Bounds = bounds,
-                Fn = MultiplicationCoord,
-                Shlp = shlp,
-                Generator = new RandomGenerator(null),
-                Lambda = 4,
-                Iterations = 10,
-                Separator = new BestSeparator<MKT_Point>()
-            };
-            var name = config.ToString();
+            GlobalSettings.LeftXBound = 0;
+            GlobalSettings.RightXBound = 4.2f;
+            GlobalSettings.BottomYBound = 0;
+            GlobalSettings.TopYBound = 6.4f;
+            GlobalSettings.Fn = MultiplicationCoord;
+            var config = (MKT_Config) new RnadomMKTConfigGenerator()
+                .GenerateEntityArgs(10)
+                .ElementAt(RandomHelper.Random(1,9));
+
             mkt = new OPR.KP.MKT(config);
             mkt.OnEnd += OnMKTEnd;
             Step();

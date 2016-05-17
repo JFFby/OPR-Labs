@@ -28,7 +28,7 @@ namespace UnitTestProject1
             var codeTransformer = new BinaryCromosome();
             var args = new BinaryEntityArgs {X = 2.535749f, Y = -3.845346f};
             var code = codeTransformer.EntityArgsToCode(args);
-            var args2 = codeTransformer.CodeToEntityArgs(code) as ValidationResult;
+            var args2 = codeTransformer.CodeToEntityArgs(code).Args as BinaryEntityArgs;
 
             Assert.AreEqual(2.5f, args2.X);
             Assert.AreEqual(-3.8f, args2.Y);

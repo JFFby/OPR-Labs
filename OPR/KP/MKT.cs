@@ -6,6 +6,7 @@ using OPR.KP.MKT_Items;
 using OPR.KP.Shlp;
 using OPR.lb1;
 using OPR.lb2.Interfaces.Common;
+using OPR.SSGA2;
 
 namespace OPR.KP
 {
@@ -14,12 +15,12 @@ namespace OPR.KP
         private readonly IShlpWrapper shlpWrapper;
         private readonly ISeparator<MKT_Point> separator;
         private readonly IGenerator<MKT_Point> generator;
-        private SquarePoint[] bounds;
-        private int iterations;
+        private readonly SquarePoint[] bounds;
+        private readonly int iterations;
         private int currentIteration;
-        private int N;
-        private int n;
-        private byte lambda;
+        private readonly int N;
+        private readonly int n;
+        private readonly byte lambda;
         private Func<float, float, float> fn;
         private IList<MKT_Point> topPointsForNextIteration;
 
@@ -30,12 +31,12 @@ namespace OPR.KP
             this.shlpWrapper = config.Shlp;
             this.separator = config.Separator;
             this.generator = config.Generator;
-            this.iterations = config.Iterations;
-            this.bounds = config.Bounds;
+            this.iterations = 3;
+            this.bounds = GlobalSettings.GetBounds();
             this.lambda = config.Lambda;
             this.N = config.N;
             this.n = config.n;
-            this.fn = config.Fn;
+            this.fn = GlobalSettings.Fn;
         }
 
         public MKT_Point Solve()
@@ -124,7 +125,7 @@ namespace OPR.KP
 
             var state = new
             {
-                state = new Genereate_MKT_Point_Arg {Bounds = bounds, fn = fn}
+                state = new Genereate_MKT_Point_Arg { Bounds = bounds, fn = fn }
             };
 
             generator.SetupState(state);

@@ -62,6 +62,8 @@
     <Compile Include="KP\Shlp\IShlpWrapper.cs" />
     <Compile Include="KP\Shlp\NelderMid\NelderMid.cs" />
     <Compile Include="KP\Shlp\NelderMid\NelderMidWrapper.cs" />
+    <Compile Include="KP\SSGA_MKT_Items\MktIterationMode.cs" />
+    <Compile Include="KP\SSGA_MKT_Items\RnadomMKTConfigGenerator.cs" />
     <Compile Include="lb1\HyperCube.cs" />
     <Compile Include="lb1\Point.cs" />
     <Compile Include="lb2\BinaryEntity.cs" />

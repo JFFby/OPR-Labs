@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OPR.KP.MKT_Items;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
 
 namespace OPR.KP.Shlp.NelderMid
@@ -17,15 +18,20 @@ namespace OPR.KP.Shlp.NelderMid
         private readonly IList<MKT_Point> _points;
         private readonly SquarePoint[] bounds;
         private  MKT_Point[] currentPoints;
-        private readonly int hi = 0, gi = 1, li = 2, maxPoints = 75;
+        private readonly int hi = 0, gi = 1, li = 2, maxPoints;
 
-        public NelderMid(MKT_Point startPoint, Func<float, float, float> fn, SquarePoint[] bounds)
+        public NelderMid(
+            MKT_Point startPoint,
+            Func<float, float, float> fn,
+            SquarePoint[] bounds,
+            MktIterationMode iterationMode)
         {
             this.startPoint = startPoint;
             this.fn = fn;
             _points = new List<MKT_Point>();
             this.bounds = bounds;
             currentPoints = new MKT_Point[3];
+            maxPoints = iterationMode == MktIterationMode.Full ? 75 : 5;
         }
 
         public SquarePoint Calculate()

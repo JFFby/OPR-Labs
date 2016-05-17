@@ -1,11 +1,11 @@
-﻿using System;
-using OPR.KP.Shlp;
-using OPR.lb1;
+﻿using OPR.KP.Shlp;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb2.Interfaces.Common;
+using OPR.SSGA2;
 
 namespace OPR.KP.MKT_Items
 {
-    public sealed class MKT_Config
+    public sealed class MKT_Config : EntityArgs
     {
         public IShlpWrapper Shlp {get; set; }
 
@@ -16,19 +16,17 @@ namespace OPR.KP.MKT_Items
         public int N { get; set; }
          
         public int n { get; set; } 
-
-        public int Iterations { get; set; } 
-
-        public SquarePoint [] Bounds { get; set; }
-
+        
         public byte Lambda { get; set; }
 
-        public Func<float, float, float> Fn { get; set; }
+        public MktIterationMode IterationMode { get; set; }
 
         public override string ToString()
         {
-            return string.Join("_", GetBoundString(Bounds[0].x, Bounds[1].x), GetBoundString(Bounds[0].y, Bounds[1].y)
-                , Shlp.ShlpType, Generator.GetType().Name, Separator.GetType().Name, N, n, Iterations, Lambda);
+            return string.Join("_",
+                GetBoundString(GlobalSettings.LeftXBound, GlobalSettings.RightXBound),
+                GetBoundString(GlobalSettings.BottomYBound, GlobalSettings.TopYBound),
+                Shlp.ShlpType, Generator.GetType().Name, Separator.GetType().Name, N, n, Lambda);
         }
 
         public string GetBoundString(float from, float to)
