@@ -22,7 +22,7 @@ namespace OPR.KP.MKT_Items
             ShlpFrom = shlpFrPoint;
         }
         
-        public int Id { get; }
+        public int Id { get; set; }
 
         public MKT_Point ShlpFrom { get; }
 

@@ -1,17 +1,14 @@
 ﻿using OPR.lb2.Interfaces.Common;
-using OPR.SSGA2;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using OPR.SSGA2.Interfaces;
 
 namespace OPR.lb2
 {
-    public class Rang<TValueService, TGenom> : ISeparator<Entity<TValueService, TGenom>> where TValueService : IValueService, new()
-        where TGenom : IGenom, new()
+    public class Rang : ISeparator<IValue>
     {
 
-        public IList<Entity<TValueService, TGenom>> Separate(IList<Entity<TValueService, TGenom>> inpuList, int count, bool isAscending)
+        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
         {
             int[] arrayOfKey = new int[count];
             arrayOfKey[0] = 1;
@@ -24,7 +21,7 @@ namespace OPR.lb2
 
             var binaryGeneration = inpuList.OrderBy(o => o.Value).ToList();
 
-            List<Entity<TValueService, TGenom>> rang = new List<Entity<TValueService, TGenom>>();
+            List<IValue> rang = new List<IValue>();
 
             for (var i = 0; rang.Count < count; ++i)
             {

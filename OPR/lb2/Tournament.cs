@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OPR.lb2.Interfaces.Common;
-using OPR.SSGA2;
 using OPR.SSGA2.Interfaces;
 
 namespace OPR.lb2
 {
-    public class Tournament<TValueService, TGenom> : ISeparator<Entity<TValueService, TGenom>> where TValueService : IValueService, new()
-        where TGenom : IGenom, new()
+    public class Tournament: ISeparator<IValue>
     {
-        public IList<Entity<TValueService, TGenom>> Separate(IList<Entity<TValueService, TGenom>> inpuList, int count, bool isAscending)
+        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
         {
             int evenPair = 0;
             int oddPair = 0;
             int currentCount = count;
-            IList<Entity<TValueService, TGenom>> tournament = new List<Entity<TValueService, TGenom>>();
-            IList<Entity<TValueService, TGenom>>[] tournamentPart;
+            IList<IValue> tournament = new List<IValue>();
+            IList<IValue>[] tournamentPart;
 
 
             while(inpuList.Count % currentCount != 0) {
@@ -24,11 +22,11 @@ namespace OPR.lb2
             }
             evenPair = inpuList.Count / 2;
 
-            tournamentPart = new List<Entity<TValueService, TGenom>>[evenPair + oddPair];
+            tournamentPart = new List<IValue>[evenPair + oddPair];
             
             for (int i = 0, j = 0; i < evenPair; ++i)
             {
-                tournamentPart[i] = new List<Entity<TValueService, TGenom>>();
+                tournamentPart[i] = new List<IValue>();
                 for (var k = 0; k < 2; ++k, ++j)
                 {
                     tournamentPart[i].Add(inpuList[j]);

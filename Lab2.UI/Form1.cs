@@ -11,6 +11,7 @@ using OPR.lb2.Enums;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
 using OPR.SSGA2.Extension;
+using OPR.SSGA2.Interfaces;
 using OPR.SSGA2.Italik;
 using BinaryGeneration = OPR.SSGA2.Generation<OPR.SSGA2.Italik.BinaryValueService, OPR.SSGA2.Italik.BinaryGenom>;
 using BinaryGenom = OPR.SSGA2.Italik.BinaryGenom;
@@ -177,8 +178,8 @@ namespace Lab2.UI
                 SetupSSGA();
                 ssga = new BinarySSGA(
                     GetFirstSeparator(),
-                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                     GetGenerator());
+                    new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
+                    GetGenerator());
                 return true;
             }
 
@@ -234,17 +235,17 @@ namespace Lab2.UI
                     Math.Max(Math.Abs(GlobalSettings.BottomYBound), Math.Abs(GlobalSettings.TopYBound))));
         }
 
-        private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
+        private ISeparator<IValue> GetFirstSeparator()
         {
             GlobalSettings.firstSelectionVariant = comboBox1.SelectedIndex;
             switch (GlobalSettings.firstSelectionVariant)
             {
                 case 0:
-                    return new Roulette<BinaryValueService, BinaryGenom>();
+                    return new Roulette();
                 case 1:
-                    return new Tournament<BinaryValueService, BinaryGenom>();
+                    return new Tournament();
                 case 2:
-                    return new Rang<BinaryValueService, BinaryGenom>();
+                    return new Rang();
                 default:
                     throw new ArgumentException();
             }

@@ -10,12 +10,12 @@ namespace OPR.SSGA2
     public class SSGA2<TValueService, TGenom> where TValueService : IValueService, new()
         where TGenom : IGenom, new()
     {
-        private readonly ISeparator<Entity<TValueService, TGenom>> firstStepSeprator;
+        private readonly ISeparator<IValue> firstStepSeprator;
         private readonly ISeparator<Entity<TValueService, TGenom>> commonSeparator;
         private readonly IArgsGenerator Generator;
         private readonly List<Generation<TValueService, TGenom>> generations;
 
-        public SSGA2(ISeparator<Entity<TValueService, TGenom>> firstStepSeprator,
+        public SSGA2(ISeparator<IValue> firstStepSeprator,
             ISeparator<Entity<TValueService, TGenom>> commonSeparator,
             IArgsGenerator generator)
         {
@@ -79,7 +79,8 @@ namespace OPR.SSGA2
             var args = Generator.GenerateEntityArgs(GlobalSettings.N);
             var allEntities = args
                 .Select(x => new Entity<TValueService, TGenom>(x)).ToList().SetIds();
-            var validEntites = firstStepSeprator.Separate(allEntities, GlobalSettings.nFromN, true);
+            var validEntites = firstStepSeprator.Separate(
+                allEntities.Cast<IValue>().ToList(), GlobalSettings.nFromN, true).Cast<Entity<TValueService, TGenom>>();
             return validEntites
                 .ToGeneration()
                 .MarkUpGenereation(commonSeparator);

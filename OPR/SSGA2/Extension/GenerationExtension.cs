@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2.Interfaces;
@@ -10,11 +11,6 @@ namespace OPR.SSGA2.Extension
         public static List<Entity<TValueService, TGenom>> CreateNewEntities<TValueService, TGenom>(this List<Entity<TValueService, TGenom>> bestEntities)
             where TValueService : IValueService, new() where TGenom : IGenom, new()
         {
-            //if (bestEntities.Count != 2)
-            //{
-            //    throw new KeyNotFoundException();
-            //}
-
             var first = bestEntities.First();
             var second = bestEntities[1];
             return first.CreateChildEntity(second);
@@ -27,6 +23,7 @@ namespace OPR.SSGA2.Extension
             return new Generation<TValueService, TGenom>(entities.ToList());
         }
 
+        [Obsolete("Do Not use it anywhere!")]
         public static Generation<TValueService, TGenom> ToMarkedGeneration<TValueService, TGenom>(
            this IEnumerable<Entity<TValueService, TGenom>> entities,
            ISeparator<Entity<TValueService, TGenom>> separator)

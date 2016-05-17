@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OPR.lb2.Interfaces.Common;
-using OPR.SSGA2;
 using OPR.SSGA2.Interfaces;
 using System;
 
 namespace OPR.lb2
 {
-    public class Roulette<TValueService, TGenom> : ISeparator<Entity<TValueService, TGenom>> where TValueService : IValueService, new()
-           where TGenom : IGenom, new()
+    public class Roulette: ISeparator<IValue>
     {
-        public IList<Entity<TValueService, TGenom>> Separate(IList<Entity<TValueService, TGenom>> inpuList, int count, bool isAscending)
+        public IList<IValue> Separate(IList<IValue> inpuList, int count, bool isAscending)
         {
             float summ = 0, procent = 0;
             int length = inpuList.Count;
@@ -53,7 +51,7 @@ namespace OPR.lb2
                 }
             }
 
-            IList<Entity<TValueService, TGenom>> roulette = new List<Entity<TValueService, TGenom>>();
+            IList<IValue> roulette = new List<IValue>();
 
             for (var i = 0; i < count; ++i)
             {
