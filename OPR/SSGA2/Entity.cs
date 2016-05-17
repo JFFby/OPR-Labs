@@ -6,9 +6,9 @@ using OPR.SSGA2.Interfaces;
 namespace OPR.SSGA2
 {
     public sealed class Entity<TValueService, TGenom> : IValue where TValueService : IValueService, new()
-        where TGenom : IGenom, new() 
+        where TGenom : IGenom, new()
     {
-        public  readonly EntityArgs Args;
+        public readonly EntityArgs Args;
         private readonly IGenom genom;
 
         private float? value;
@@ -22,17 +22,21 @@ namespace OPR.SSGA2
             Function = EntityFunction.None;
         }
 
-        public Entity(CreationResult result): this(result.Args)
+        public Entity(CreationResult result) : this(result.Args)
         {
             Type = result.Type;
             CrossPoint = result.CrossingPoint;
+            if (result.Functoin.HasValue)
+            {
+                Function = result.Functoin.Value;
+            }
         }
 
-        public Entity(Entity<TValueService, TGenom> entity) :this(entity.Args)
+        public Entity(Entity<TValueService, TGenom> entity) : this(entity.Args)
         {
             Id = entity.Id;
             GenerationId = entity.GenerationId;
-        } 
+        }
 
         public string Code { get { return genom.Code; } }
 
@@ -59,6 +63,8 @@ namespace OPR.SSGA2
                 return value.Value;
             }
         }
+
+        public bool IsValid { get { return Function != EntityFunction.NotValid; } }
 
         public List<Entity<TValueService, TGenom>> CreateChildEntity(Entity<TValueService, TGenom> entity)
         {

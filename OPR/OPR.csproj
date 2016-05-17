@@ -106,6 +106,7 @@
     <Compile Include="SSGA2\Italik\BinarySSGA.cs" />
     <Compile Include="SSGA2\Italik\BinaryValueService.cs" />
     <Compile Include="SSGA2\SSGA2.cs" />
+    <Compile Include="SSGA2\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

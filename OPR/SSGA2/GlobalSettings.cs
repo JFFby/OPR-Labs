@@ -28,6 +28,8 @@ namespace OPR.SSGA2
         public static float TopYBound { get; set; }
 
         public static float BottomYBound { get; set; }
+
+        public static int SSGAIterationCount { get; set; }
         #endregion
 
         #region BinaryRegion

@@ -4,7 +4,7 @@
     {
         int[] EntityArgsToCode(EntityArgs args);
 
-        EntityArgs CodeToEntityArgs(int[] cdoe);
+        ValidationResult CodeToEntityArgs(int[] cdoe);
 
         int[] Mutate(int[] code);
     }

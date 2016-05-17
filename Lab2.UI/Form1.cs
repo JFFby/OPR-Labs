@@ -11,7 +11,6 @@ using OPR.lb2.Enums;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
 using OPR.SSGA2.Extension;
-using OPR.SSGA2.Interfaces;
 using OPR.SSGA2.Italik;
 using BinaryGeneration = OPR.SSGA2.Generation<OPR.SSGA2.Italik.BinaryValueService, OPR.SSGA2.Italik.BinaryGenom>;
 using BinaryGenom = OPR.SSGA2.Italik.BinaryGenom;
@@ -23,7 +22,7 @@ namespace Lab2.UI
     {
         private IList<BinaryGeneration> generations;
         private BinarySSGA ssga;
-        private byte N;
+        private int completedIterationCount;
 
         public Form1()
         {
@@ -31,6 +30,8 @@ namespace Lab2.UI
             InitValues();
             SetupGrid();
             KeyPreview = true;
+            iterationCountTextBox.Text = "10";
+            completedIterationCount = 0;
         }
 
         private void SetupGrid()
@@ -48,6 +49,11 @@ namespace Lab2.UI
             generations = isFirstStep
                 ? ssga.Start()
                 : ssga.EvalutionStep();
+        }
+
+        private void StepWithUIUpdate()
+        {
+            Step();
             OnDataArrived();
         }
 
@@ -97,7 +103,7 @@ namespace Lab2.UI
 
         private void CreateRow(Entity<BinaryValueService, OPR.SSGA2.Italik.BinaryGenom> entity)
         {
-            var row = GetColorizedRow(entity.Function);
+            var row = GetColorizedRow(entity);
             row.Cells.AddRange(Cells(row.DefaultCellStyle.BackColor).ToArray());
             row.Cells[0].Value = string.Format("{0}.{1}", entity.GenerationId, entity.Id);
             row.Cells[1].Value = entity.X();
@@ -130,9 +136,9 @@ namespace Lab2.UI
             return cells;
         }
 
-        private DataGridViewRow GetColorizedRow(EntityFunction function)
+        private DataGridViewRow GetColorizedRow(Entity<BinaryValueService, BinaryGenom> entity)
         {
-            switch (function)
+            switch (entity.Function)
             {
                 case EntityFunction.BestParent:
                     return ColorizedRow(Color.Green);
@@ -140,6 +146,8 @@ namespace Lab2.UI
                     return ColorizedRow(Color.Red);
                 case EntityFunction.BestChild:
                     return ColorizedRow(Color.Green);
+                case EntityFunction.NotValid:
+                    return ColorizedRow(Color.BlueViolet);
                 case EntityFunction.None:
                 default:
                     return ColorizedRow(Color.White);
@@ -166,34 +174,34 @@ namespace Lab2.UI
         {
             if (ssga == null)
             {
-                var pNu = byte.Parse(pNuTextbox.Text);
-                N = byte.Parse(TextboxN.Text);
-                var n = byte.Parse(nTextBox.Text);
-                BinaryСhromosome.SetUp(GetBinaryViewBoundLength(), mutationChance: pNu);
-
-                GlobalSettings.N = int.Parse(TextboxN.Text);
-                GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
-                GlobalSettings.IsBestFromChildernOnly = true;
-                GlobalSettings.IsCrossingFirst = true;
-                GlobalSettings.MutationChance = int.Parse(pNuTextbox.Text);
-                GlobalSettings.nFromN = int.Parse(nTextBox.Text);
-                GetBounds();
-
-               ssga = new BinarySSGA(
-                   GetFirstSeparator(),
-                    new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
-                    GetGenerator());
+                SetupSSGA();
+                ssga = new BinarySSGA(
+                    GetFirstSeparator(),
+                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
+                     GetGenerator());
                 return true;
             }
 
             return false;
         }
 
+        private void SetupSSGA()
+        {
+            GlobalSettings.N = int.Parse(TextboxN.Text);
+            GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
+            GlobalSettings.IsBestFromChildernOnly = true;
+            GlobalSettings.IsCrossingFirst = true;
+            GlobalSettings.MutationChance = int.Parse(pNuTextbox.Text);
+            GlobalSettings.nFromN = int.Parse(nTextBox.Text);
+            GlobalSettings.SSGAIterationCount = int.Parse(iterationCountTextBox.Text) + 1;
+            GetBounds();
+        }
+
         private IGenerator<MKT_Point> GetGenerator()
         {
             GlobalSettings.isRandomOrGridPoints = randomOrGridPoint.Checked;
             var generator = GlobalSettings.isRandomOrGridPoints
-                ? (IGenerator<MKT_Point>) new RandomGenerator(new BinaryArgsConverter())
+                ? (IGenerator<MKT_Point>)new RandomGenerator(new BinaryArgsConverter())
                 : (IGenerator<MKT_Point>)new GridPointsHelper(new BinaryArgsConverter());
 
             generator.SetupState((dynamic)new
@@ -224,13 +232,11 @@ namespace Lab2.UI
             GlobalSettings.BottomYBound = BoundsY()[0];
             GlobalSettings.TopYBound = BoundsY()[1];
 
-            GlobalSettings.MaxIntValueFroCrossing = (int) Math.Round(
+            GlobalSettings.MaxIntValueFroCrossing = (int)Math.Round(
                 Math.Max(
                     Math.Max(Math.Abs(GlobalSettings.LeftXBound), Math.Abs(GlobalSettings.RightXBound)),
                     Math.Max(Math.Abs(GlobalSettings.BottomYBound), Math.Abs(GlobalSettings.TopYBound))));
         }
-
-
 
         private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
         {
@@ -266,7 +272,6 @@ namespace Lab2.UI
             bounds.AddRange(BoundsX());
             return bounds.Select(x => (int)Math.Floor(x)).OrderByDescending(x => x)
                 .First();
-
         }
 
         private float[] BoundsX()
@@ -305,26 +310,28 @@ namespace Lab2.UI
         {
             if (e.KeyCode == Keys.Space)
             {
-                Step();
+                completedIterationCount++;
+                StepWithUIUpdate();
             }
-        }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                int i = 0;
+                do
+                {
+                    Step();
+                    completedIterationCount++;
+                } while (++i < GlobalSettings.SSGAIterationCount);
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
+                OnDataArrived();
+            }
 
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void comboBox1_ControlAdded(object sender, ControlEventArgs e)
-        {
+            if ((e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+                && completedIterationCount == GlobalSettings.SSGAIterationCount)
+            {
+                {
+                    MessageBox.Show(completedIterationCount.ToString());
+                }
+            }
         }
 
         private void comboBox1_BindingContextChanged(object sender, EventArgs e)

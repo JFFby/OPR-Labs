@@ -49,7 +49,7 @@ namespace OPR.SSGA2
             List<Entity<TValueService, TGenom>> childrens)
         {
             var source = GetSeparationSource(parents, childrens);
-            var bestEntity = commonSeparator.Separate(source, 1, true).First();
+            var bestEntity = commonSeparator.Separate(source.Where(x => x.IsValid).ToList(), 1, true).First();
             bestEntity.Function = EntityFunction.BestChild;
             var nextGeneration = new List<Entity<TValueService,TGenom>>(parents
                 .ToMarkedGeneration(commonSeparator) //Do Not use it anywhere!

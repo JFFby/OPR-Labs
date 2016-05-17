@@ -2,6 +2,6 @@
 {
     public enum EntityFunction
     {
-        BestParent, BestChild, WorstParent, None
+        BestParent, BestChild, WorstParent, None, NotValid
     }
 }

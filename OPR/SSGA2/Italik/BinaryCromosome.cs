@@ -5,9 +5,9 @@ using OPR.SSGA2.Interfaces;
 
 namespace OPR.SSGA2.Italik
 {
-    public sealed class BinaryCromosome :  IChromosome
+    public sealed class BinaryCromosome : IChromosome
     {
-        private readonly  int intValue = GlobalSettings.MaxIntValueFroCrossing;
+        private readonly int intValue = GlobalSettings.MaxIntValueFroCrossing;
         private readonly int integerPatLength;
         private const int frictionLength = 4; //private settings of BinaryCromosome. Not setted in ui
 
@@ -25,15 +25,14 @@ namespace OPR.SSGA2.Italik
             return result.ToArray();
         }
 
-        public EntityArgs CodeToEntityArgs(int[] code)
+        public ValidationResult CodeToEntityArgs(int[] code)
         {
-            //TODO: Add validation
-            var oneNumberLength = code.Length/2;
+            var oneNumberLength = code.Length / 2;
             var firstPart = new int[oneNumberLength];
-            Array.Copy(code,firstPart,oneNumberLength);
+            Array.Copy(code, firstPart, oneNumberLength);
             var x = ConvertCodePartToFloat(firstPart);
             var secondPart = new int[oneNumberLength];
-            Array.Copy(code,oneNumberLength, secondPart,0, oneNumberLength);
+            Array.Copy(code, oneNumberLength, secondPart, 0, oneNumberLength);
             var y = ConvertCodePartToFloat(secondPart);
 
             return GetNullIfNotValid(new BinaryEntityArgs { X = x, Y = y });
@@ -50,14 +49,18 @@ namespace OPR.SSGA2.Italik
             return result;
         }
 
-        private BinaryEntityArgs GetNullIfNotValid(BinaryEntityArgs args)
+        private ValidationResult GetNullIfNotValid(BinaryEntityArgs args)
         {
-            return ValidationService.ValidateBounds(args.X, GlobalSettings.LeftXBound, GlobalSettings.RightXBound)
-                   && ValidationService.ValidateBounds(args.Y, GlobalSettings.BottomYBound, GlobalSettings.TopYBound)
-                ? args
-                : null;
+            var isValid = ValidationService.ValidateBounds(args.X, GlobalSettings.LeftXBound, GlobalSettings.RightXBound)
+                   && ValidationService.ValidateBounds(args.Y, GlobalSettings.BottomYBound, GlobalSettings.TopYBound);
+
+            return new ValidationResult
+            {
+                Args = args,
+                IsValid = isValid
+            };
         }
-        
+
         private BinaryEntityArgs GetArgs(EntityArgs args)
         {
             var binaryArgs = args as BinaryEntityArgs;
@@ -71,7 +74,7 @@ namespace OPR.SSGA2.Italik
 
         private float ConvertCodePartToFloat(int[] codePart)
         {
-             var sign = codePart[0];
+            var sign = codePart[0];
             var integer = new int[integerPatLength];
             var fraction = new int[frictionLength];
             for (int i = 1, j = 0; j < integerPatLength; ++i, ++j)
@@ -99,7 +102,7 @@ namespace OPR.SSGA2.Italik
 
             var stringValue = string.Format("{0}{1},{2}", signValue,
                 integerValue.ToString(), fractionValue.ToString());
-             return (float)Decimal.Parse(stringValue);
+            return (float)Decimal.Parse(stringValue);
         }
 
         private List<int> ConvertFloatToCodePart(float value)
