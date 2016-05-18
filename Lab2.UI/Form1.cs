@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using OPR;
 using OPR.KP.MKT_Items;
 using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
@@ -98,7 +99,7 @@ namespace Lab2.UI
         private void SetupSSGA()
         {
             GlobalSettings.N = int.Parse(TextboxN.Text);
-            GlobalSettings.Fn = (x, y) => (float)(Math.Pow(x, 2) + Math.Pow(y, 2));
+            GlobalSettings.Fn = new FnHelper(fnTextBox.Text).Fn;
             GlobalSettings.IsBestFromChildernOnly = true;
             GlobalSettings.IsCrossingFirst = true;
             GlobalSettings.MutationChance = int.Parse(pNuTextbox.Text);
@@ -202,6 +203,9 @@ namespace Lab2.UI
             tTextBox.Text = "0,1";
             tTextBox.Enabled = false;
             randomOrGridPoint.Checked = true;
+            fnTextBox.Text = 
+                "(1 + 8 * [x] - 7 * Pow([x],2) +7 * Pow([x],3) / 3 - Pow([x],4) / 4) *" +
+                " (Pow([y],2) * Pow([E],(-1) * [y]))";
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)

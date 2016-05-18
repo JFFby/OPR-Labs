@@ -52,6 +52,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.iterationCountTextBox = new System.Windows.Forms.TextBox();
+            this.fnTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -72,7 +73,7 @@
             series1.Name = "Series1";
             series1.YValuesPerPoint = 10;
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(626, 717);
+            this.chart1.Size = new System.Drawing.Size(626, 752);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
@@ -251,7 +252,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(646, 154);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(471, 575);
+            this.dataGridView1.Size = new System.Drawing.Size(471, 610);
             this.dataGridView1.TabIndex = 17;
             // 
             // randomOrGridPoint
@@ -295,11 +296,22 @@
             this.iterationCountTextBox.Size = new System.Drawing.Size(60, 26);
             this.iterationCountTextBox.TabIndex = 20;
             // 
+            // fnTextBox
+            // 
+            this.fnTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fnTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.fnTextBox.Location = new System.Drawing.Point(646, 122);
+            this.fnTextBox.Name = "fnTextBox";
+            this.fnTextBox.Size = new System.Drawing.Size(207, 26);
+            this.fnTextBox.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1129, 741);
+            this.ClientSize = new System.Drawing.Size(1129, 776);
+            this.Controls.Add(this.fnTextBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.iterationCountTextBox);
             this.Controls.Add(this.comboBox1);
@@ -354,6 +366,7 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox iterationCountTextBox;
+        private System.Windows.Forms.TextBox fnTextBox;
     }
 }
 
