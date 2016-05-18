@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using OPR.KP.MKT_Items;
+using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
 using OPR.lb2;
-using OPR.lb2.Enums;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
 using OPR.SSGA2.Extension;
@@ -66,46 +65,13 @@ namespace Lab2.UI
 
         private void UpdateGrid()
         {
-            dataGridView1.Rows.Clear();
-            foreach (var binaryGeneration in generations)
-            {
-                Drawline();
-                for (var i = 0; i < binaryGeneration.Parents.Count; ++i)
-                {
-                    var parent = binaryGeneration.Parents[i];
-                    CreateRow(parent);
-                }
-
-                if (binaryGeneration.Children != null && binaryGeneration.Children.Any())
-                {
-                    var groups = binaryGeneration.Children.GroupBy(x => x.Type);
-                    foreach (var group in groups)
-                    {
-                        DrawLineChildrenSeparator(GetGroupMsg(group.Key,
-                            binaryGeneration.GetChilrensCrossingPoint().ToString()));
-                        foreach (var item in group)
-                        {
-                            CreateRow(item);
-                        }
-                    }
-                }
-            }
+            GridHandler.UpdateGrid(dataGridView1, generations, CreateRow);
         }
 
-        private string GetGroupMsg(EntityType type, string crossPoit)
+        private void CreateRow(Entity<BinaryValueService, BinaryGenom> entity)
         {
-            if (type == EntityType.Child)
-            {
-                return string.Format("{0} - {1}", type.ToString(), crossPoit);
-            }
-
-            return type.ToString();
-        }
-
-        private void CreateRow(Entity<BinaryValueService, OPR.SSGA2.Italik.BinaryGenom> entity)
-        {
-            var row = GetColorizedRow(entity);
-            row.Cells.AddRange(Cells(row.DefaultCellStyle.BackColor).ToArray());
+            var row = GridHandler.GetColorizedRow(entity);
+            row.Cells.AddRange(GridHandler.Cells(row.DefaultCellStyle.BackColor, dataGridView1).ToArray());
             row.Cells[0].Value = string.Format("{0}.{1}", entity.GenerationId, entity.Id);
             row.Cells[1].Value = entity.X();
             row.Cells[2].Value = entity.Y();
@@ -114,70 +80,13 @@ namespace Lab2.UI
             dataGridView1.Rows.Add(row);
         }
 
-        private void DrawLineChildrenSeparator(string msg)
-        {
-            var color = Color.Yellow;
-            var row = ColorizedRow(color);
-            row.Cells.AddRange(Cells(Color.Yellow).ToArray());
-            row.Cells[3].Value = "Потомки";
-            row.Cells[4].Value = msg;
-            dataGridView1.Rows.Add(row);
-        }
-
-        private IList<DataGridViewCell> Cells(Color color)
-        {
-            var cells = new List<DataGridViewCell>();
-            for (int i = 0; i < dataGridView1.ColumnCount; i++)
-            {
-                var cell = new DataGridViewTextBoxCell();
-                cell.Style.BackColor = color;
-                cells.Add(cell);
-            }
-
-            return cells;
-        }
-
-        private DataGridViewRow GetColorizedRow(Entity<BinaryValueService, BinaryGenom> entity)
-        {
-            switch (entity.Function)
-            {
-                case EntityFunction.BestParent:
-                    return ColorizedRow(Color.Green);
-                case EntityFunction.WorstParent:
-                    return ColorizedRow(Color.Red);
-                case EntityFunction.BestChild:
-                    return ColorizedRow(Color.Green);
-                case EntityFunction.NotValid:
-                    return ColorizedRow(Color.BlueViolet);
-                case EntityFunction.None:
-                default:
-                    return ColorizedRow(Color.White);
-            }
-        }
-
-        private void Drawline()
-        {
-            if (dataGridView1.Rows.Count > 0)
-            {
-                var row = ColorizedRow(Color.Black);
-                dataGridView1.Rows.Add(row);
-            }
-        }
-
-        private DataGridViewRow ColorizedRow(Color color)
-        {
-            var datagridRow = new DataGridViewRow();
-            datagridRow.DefaultCellStyle.BackColor = color;
-            return datagridRow;
-        }
-
         private bool InitializeSSGA()
         {
             if (ssga == null)
             {
                 SetupSSGA();
                 ssga = new BinarySSGA(
-                    GetFirstSeparator(),
+                    GetFirstSeparator<Entity<BinaryValueService, BinaryGenom>>(),
                     new BestSeparator<Entity<BinaryValueService, BinaryGenom>>(),
                     GetGenerator());
                 return true;
@@ -235,17 +144,17 @@ namespace Lab2.UI
                     Math.Max(Math.Abs(GlobalSettings.BottomYBound), Math.Abs(GlobalSettings.TopYBound))));
         }
 
-        private ISeparator<Entity<BinaryValueService, BinaryGenom>> GetFirstSeparator()
+        private ISeparator<T> GetFirstSeparator<T>() where T : IValue
         {
             GlobalSettings.firstSelectionVariant = comboBox1.SelectedIndex;
             switch (GlobalSettings.firstSelectionVariant)
             {
                 case 0:
-                    return new Roulette<Entity<BinaryValueService, BinaryGenom>>();
+                    return new Roulette<T>();
                 case 1:
-                    return new Tournament<Entity<BinaryValueService, BinaryGenom>>();
+                    return new Tournament<T>();
                 case 2:
-                    return new Rang<Entity<BinaryValueService, BinaryGenom>>();
+                    return new Rang<T>();
                 default:
                     throw new ArgumentException();
             }
@@ -261,14 +170,6 @@ namespace Lab2.UI
             {
                 chart1.Series[0].Points.Add(new DataPoint(entity.X(), entity.Y()));
             }
-        }
-
-        private int GetBinaryViewBoundLength()
-        {
-            var bounds = new List<float>(BoundsY());
-            bounds.AddRange(BoundsX());
-            return bounds.Select(x => (int)Math.Floor(x)).OrderByDescending(x => x)
-                .First();
         }
 
         private float[] BoundsX()
@@ -329,6 +230,13 @@ namespace Lab2.UI
                     MessageBox.Show(completedIterationCount.ToString());
                 }
             }
+
+            if (e.KeyCode == Keys.S && e.Control)
+            {
+                var ssgaForm = new SsgaMktForm(GetMktSsga());
+                ssgaForm.Show();
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void comboBox1_BindingContextChanged(object sender, EventArgs e)
@@ -338,5 +246,17 @@ namespace Lab2.UI
             comboBox1.Items.Add("Rang");
             comboBox1.SelectedIndex = 0;
         }
+
+        #region
+
+        private MktSsga GetMktSsga()
+        {
+            SetupSSGA();
+            return new MktSsga(
+                GetFirstSeparator<Entity<MktValueService, MktGenom>>(),
+                new BestSeparator<Entity<MktValueService, MktGenom>>(),
+                new RnadomMKTConfigGenerator());
+        }
+        #endregion
     }
 }

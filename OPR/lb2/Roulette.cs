@@ -41,7 +41,6 @@ namespace OPR.lb2
             var num = 0;
             for (; num != count;)
             {
-
                 float sector = (float)Math.Round(RandomHelper.RandomFloat(0, 360), 1);
                 for (var i = 1; i < array.Length; ++i)
                 {

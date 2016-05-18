@@ -279,7 +279,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(643, 73);
+            this.label8.Location = new System.Drawing.Point(642, 59);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(112, 20);
             this.label8.TabIndex = 21;
@@ -290,7 +290,7 @@
             this.iterationCountTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.iterationCountTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.iterationCountTextBox.Location = new System.Drawing.Point(646, 96);
+            this.iterationCountTextBox.Location = new System.Drawing.Point(646, 82);
             this.iterationCountTextBox.Name = "iterationCountTextBox";
             this.iterationCountTextBox.Size = new System.Drawing.Size(60, 26);
             this.iterationCountTextBox.TabIndex = 20;

@@ -17,7 +17,7 @@ namespace OPR.KP.Shlp.NelderMid
         private readonly Func<float, float, float> fn;
         private readonly IList<MKT_Point> _points;
         private readonly SquarePoint[] bounds;
-        private  MKT_Point[] currentPoints;
+        private MKT_Point[] currentPoints;
         private readonly int hi = 0, gi = 1, li = 2, maxPoints;
 
         public NelderMid(
@@ -31,7 +31,7 @@ namespace OPR.KP.Shlp.NelderMid
             _points = new List<MKT_Point>();
             this.bounds = bounds;
             currentPoints = new MKT_Point[3];
-            maxPoints = iterationMode == MktIterationMode.Full ? 75 : 5;
+            maxPoints = iterationMode == MktIterationMode.Full ? 75 : 6;
         }
 
         public SquarePoint Calculate()
@@ -88,21 +88,23 @@ namespace OPR.KP.Shlp.NelderMid
                     xr = xh;
                     xh = buf_xr;
                     isComressionNeeded = true;
-                }else 
+                }
+                else
                 {
                     isComressionNeeded = true;
                 }
 
                 if (isComressionNeeded)
                 {
-                   var xs = new MKT_Point(Xs(xh.x,xc.x), Xs(xh.y, xc.y), fn);
+                    var xs = new MKT_Point(Xs(xh.x, xc.x), Xs(xh.y, xc.y), fn);
                     if (xs.Value < xh.Value)
                     {
                         SetupCurrentPoint(xs, hi);
-                    }else
+                    }
+                    else
                     {
                         var xi_xh = new MKT_Point(Xi(xh.x, xl.x), Xi(xh.y, xl.y), fn);
-                        SetupCurrentPoint(xi_xh,hi);
+                        SetupCurrentPoint(xi_xh, hi);
                         var xi_xg = new MKT_Point(Xi(xg.x, xl.x), Xi(xg.y, xl.y), fn);
                         SetupCurrentPoint(xi_xg, hi);
                     }
@@ -113,7 +115,7 @@ namespace OPR.KP.Shlp.NelderMid
             var suitablePoints =
                 _points.Where(x => x.x <= bounds[1].x && x.x >= bounds[0].x && x.y >= bounds[0].y && x.y <= bounds[1].y);
             return suitablePoints
-                .First(x => Math.Abs(x.Value - suitablePoints.Min(c => c.Value)) < 0.01);
+                .FirstOrDefault(x => Math.Abs(x.Value - suitablePoints.Min(c => c.Value)) < 0.01);
         }
 
         private bool OneMoreIteration()
@@ -123,7 +125,7 @@ namespace OPR.KP.Shlp.NelderMid
             {
                 for (int j = 1; j < currentPoints.Length; j++)
                 {
-                    if(currentPoints[i].Equals(currentPoints[j])) continue;
+                    if (currentPoints[i].Equals(currentPoints[j])) continue;
 
                     values.Add(Length(currentPoints[i], currentPoints[j]));
                 }
@@ -134,17 +136,17 @@ namespace OPR.KP.Shlp.NelderMid
 
         private float Length(MKT_Point p1, MKT_Point p2)
         {
-            return (float) Math.Sqrt(Math.Pow(p1.x - p2.x, 2) + Math.Pow(p1.y - p2.y, 2));
+            return (float)Math.Sqrt(Math.Pow(p1.x - p2.x, 2) + Math.Pow(p1.y - p2.y, 2));
         }
 
         private float Xi(float xi, float xl)
         {
-            return xl + (xi - xl)/2;
+            return xl + (xi - xl) / 2;
         }
 
         private float Xs(float xh, float xc)
         {
-            return beta*xh + (1 - beta)*xc;
+            return beta * xh + (1 - beta) * xc;
         }
 
         private float Xe(float xc, float xr)

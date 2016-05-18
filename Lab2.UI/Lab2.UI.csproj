@@ -54,8 +54,15 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GridHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SsgaMktForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SsgaMktForm.Designer.cs">
+      <DependentUpon>SsgaMktForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -69,6 +76,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SsgaMktForm.resx">
+      <DependentUpon>SsgaMktForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -83,6 +93,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MKT.UI\MKT.UI.csproj">
+      <Project>{9010a1e1-5504-4948-ad28-6aa0b2f9d5f0}</Project>
+      <Name>MKT.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OPR\OPR.csproj">
       <Project>{c00381df-65dc-43eb-9939-3759c9ef8b77}</Project>
       <Name>OPR</Name>

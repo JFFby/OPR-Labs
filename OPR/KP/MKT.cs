@@ -77,7 +77,7 @@ namespace OPR.KP
         {
             var best = firstSeparator.Separate(points, n, true);
             var worst = firstSeparator.Separate(points, 1, false).First();
-            var shpFromBestPoints = best.Select(Shlp);
+            var shpFromBestPoints = best.Select(Shlp).Where(x => x != null);
             var lambdaPoints = GeneratePoints(lambda);
             var additionalPoints = ShlpFromLambdaPoints(lambdaPoints, worst);
             var topPoints = secondSeparator.Separate(shpFromBestPoints
@@ -105,7 +105,7 @@ namespace OPR.KP
             foreach (var mktPoint in points)
             {
                 var shlpValue = Shlp(mktPoint);
-                if (shlpValue.Value < worstPoint.Value)
+                if (shlpValue != null &&  shlpValue.Value < worstPoint.Value)
                 {
                     suitablePoints.Add(shlpValue);
                 }
@@ -119,7 +119,7 @@ namespace OPR.KP
         private MKT_Point Shlp(MKT_Point point)
         {
             var result = shlpWrapper.GetShlpObject(point).Calculate();
-            return new MKT_Point(result.x, result.y, point);
+            return result != null ? new MKT_Point(result.x, result.y, point) : null;
         }
 
         private IList<MKT_Point> GeneratePoints(int count)

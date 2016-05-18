@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using OPR.KP.MKT_Items;
-using OPR.KP.SSGA_MKT_Items;
-using OPR.lb2;
-using OPR.SSGA2;
 
 namespace MKT.UI
 {
@@ -15,19 +11,10 @@ namespace MKT.UI
         private bool IsEnd = false;
         private readonly OPR.KP.MKT mkt;
 
-        public MKT_Form()
+        public MKT_Form(MKT_Config config)
         {
             InitializeComponent();
             KeyPreview = true;
-            GlobalSettings.LeftXBound = 0;
-            GlobalSettings.RightXBound = 4.2f;
-            GlobalSettings.BottomYBound = 0;
-            GlobalSettings.TopYBound = 6.4f;
-            GlobalSettings.Fn = MultiplicationCoord;
-            var config = (MKT_Config) new RnadomMKTConfigGenerator()
-                .GenerateEntityArgs(10)
-                .ElementAt(RandomHelper.Random(1,9));
-
             mkt = new OPR.KP.MKT(config);
             mkt.OnEnd += OnMKTEnd;
             Step();
@@ -114,12 +101,6 @@ namespace MKT.UI
             {
                 MessageBox.Show(rezult.Value.ToString());
             }
-        }
-
-        protected virtual float MultiplicationCoord(float x, float y)
-        {
-            return (float)((1 + 8 * x - 7 * Math.Pow(x, 2) + 7 * Math.Pow(x, 3) / 3 - Math.Pow(x, 4) / 4) * (Math.Pow(y, 2) * Math.Pow(Math.E, -1 * y)));
-            //return (float)(Math.Pow((y - Math.Pow(x, 2)), 2) + Math.Pow((1 - x), 2));
         }
 
         private void Step()

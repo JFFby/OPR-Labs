@@ -27,7 +27,8 @@ namespace OPR.KP.SSGA_MKT_Items
                                   config.Lambda, RnadomMKTConfigGenerator.nBounds[0],
                                   RnadomMKTConfigGenerator.nBounds[1])
                               && ValidationService.ValidateBounds(
-                                  config.N, RnadomMKTConfigGenerator.NBounds[0], RnadomMKTConfigGenerator.NBounds[1]);
+                                  config.N, RnadomMKTConfigGenerator.NBounds[0],
+                                  RnadomMKTConfigGenerator.NBounds[1]);
                 return new ValidationResult
                 {
                     Args = config,

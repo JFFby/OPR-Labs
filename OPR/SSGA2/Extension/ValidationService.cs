@@ -4,7 +4,7 @@
     {
         public static bool ValidateBounds(float value, float minBound, float maxBound)
         {
-            return value > minBound && value < maxBound;
+            return value >= minBound && value <= maxBound;
         }
     }
 }
