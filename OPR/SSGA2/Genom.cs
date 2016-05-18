@@ -50,7 +50,7 @@ namespace OPR.SSGA2
                 }
             }
 
-           
+
             return result;
         }
 
@@ -73,13 +73,16 @@ namespace OPR.SSGA2
         private void AddIfValid(IList<CreationResult> result, int[] code, EntityType type, int crossingPoint)
         {
             var validationResult = cromosomeCreator.CodeToEntityArgs(code);
-            result.Add(new CreationResult
+            if (validationResult != null)
             {
-                Type = type,
-                Args = validationResult.Args,
-                CrossingPoint = crossingPoint,
-                Functoin = validationResult.IsValid ? (EntityFunction?) null : EntityFunction.NotValid
-            });
+                result.Add(new CreationResult
+                {
+                    Type = type,
+                    Args = validationResult.Args,
+                    CrossingPoint = crossingPoint,
+                    Functoin = validationResult.IsValid ? (EntityFunction?)null : EntityFunction.NotValid
+                });
+            }
         }
 
         private int[] CrossCode(int[] first, int[] second, int crossingPoint)

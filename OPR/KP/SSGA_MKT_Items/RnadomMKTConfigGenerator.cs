@@ -12,6 +12,9 @@ namespace OPR.KP.SSGA_MKT_Items
 {
     public sealed class RnadomMKTConfigGenerator : IArgsGenerator
     {
+        public static int[] nBounds = new[] {3, 9};
+        public static int[] NBounds = new[] {9, 25};
+
         public IList<EntityArgs> GenerateEntityArgs(int count)
         {
             var result = new List<EntityArgs>();
@@ -31,13 +34,13 @@ namespace OPR.KP.SSGA_MKT_Items
 
             return new MKT_Config
             {
-                n = RandomHelper.Random(3, 9),
-                N = RandomHelper.Random(9, 25),
+                n = RandomHelper.Random(nBounds[0], nBounds[1]),
+                N = RandomHelper.Random(NBounds[0], NBounds[1]),
                 Generator = GetGenerator(),
                 FirstSeparator = GetSeparator(),
                 SecondSeparator = GetSeparator(),
                 Shlp = GetShlp(iterationMode),
-                Lambda = (byte)RandomHelper.Random(3, 9),
+                Lambda = (byte)RandomHelper.Random(nBounds[0], nBounds[1]),
                 IterationMode = iterationMode
             };
         }
