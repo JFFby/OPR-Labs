@@ -13,7 +13,8 @@ namespace OPR.KP
     public sealed class MKT
     {
         private readonly IShlpWrapper shlpWrapper;
-        private readonly ISeparator<MKT_Point> separator;
+        private readonly ISeparator<MKT_Point> firstSeparator;
+        private readonly ISeparator<MKT_Point> secondSeparator;
         private readonly IGenerator<MKT_Point> generator;
         private readonly SquarePoint[] bounds;
         private readonly int iterations;
@@ -29,7 +30,8 @@ namespace OPR.KP
         public MKT(MKT_Config config)
         {
             this.shlpWrapper = config.Shlp;
-            this.separator = config.Separator;
+            this.firstSeparator = config.FirstSeparator;
+            secondSeparator = config.SecondSeparator;
             this.generator = config.Generator;
             this.iterations = 3;
             this.bounds = GlobalSettings.GetBounds();
@@ -53,7 +55,7 @@ namespace OPR.KP
 
             if (++currentIteration == iterations && OnEnd != null)
             {
-                var bestPoint = separator.Separate(entities.TopPoints, 1, true).First();
+                var bestPoint = firstSeparator.Separate(entities.TopPoints, 1, true).First();
                 OnEnd(bestPoint, new EventArgs());
             }
 
@@ -68,17 +70,17 @@ namespace OPR.KP
                 Iteration(entities.TopPoints);
             }
 
-            return separator.Separate(entities.TopPoints, 1, true).First();
+            return firstSeparator.Separate(entities.TopPoints, 1, true).First();
         }
 
         private MktStepEntities GenreateEntitesForThisStep(IList<MKT_Point> points)
         {
-            var best = separator.Separate(points, n, true);
-            var worst = separator.Separate(points, 1, false).First();
+            var best = firstSeparator.Separate(points, n, true);
+            var worst = firstSeparator.Separate(points, 1, false).First();
             var shpFromBestPoints = best.Select(Shlp);
             var lambdaPoints = GeneratePoints(lambda);
             var additionalPoints = ShlpFromLambdaPoints(lambdaPoints, worst);
-            var topPoints = separator.Separate(shpFromBestPoints
+            var topPoints = secondSeparator.Separate(shpFromBestPoints
                 .Union(additionalPoints)
                 .ToList(),
                 n,

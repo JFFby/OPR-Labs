@@ -34,7 +34,8 @@ namespace OPR.KP.SSGA_MKT_Items
                 n = RandomHelper.Random(3, 9),
                 N = RandomHelper.Random(9, 25),
                 Generator = GetGenerator(),
-                Separator = GetSeparator(),
+                FirstSeparator = GetSeparator(),
+                SecondSeparator = GetSeparator(),
                 Shlp = GetShlp(iterationMode),
                 Lambda = (byte)RandomHelper.Random(3, 9),
                 IterationMode = iterationMode

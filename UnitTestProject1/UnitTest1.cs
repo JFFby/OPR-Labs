@@ -30,7 +30,7 @@ namespace UnitTestProject1
             watch2.Stop();
             var nm_r = MultiplicationCoord(nmResult.x, nmResult.y);
             var hs_r = MultiplicationCoord(hsResult.x, hsResult.y);
-            Assert.IsTrue(Math.Abs(nm_r - hs_r) < 0.01);
+            Assert.IsTrue(Math.Abs(nm_r - hs_r) <1);
         }
 
         [TestMethod]
@@ -66,8 +66,6 @@ namespace UnitTestProject1
 
             var bounds = new[] { new SquarePoint(0, 0), new SquarePoint(4.2f, 6.4f), };
             var shlp = new HyperCubeWrapper(MultiplicationCoord, bounds, MktIterationMode.Full);
-            var N_Bounds = new[] { 5, 10 };
-            var n_Bounds = new int[] { 3, 5 };
             GlobalSettings.LeftXBound = 0;
             GlobalSettings.RightXBound = 4.2f;
             GlobalSettings.BottomYBound = 0;
@@ -79,7 +77,9 @@ namespace UnitTestProject1
                 Shlp = shlp,
                 Generator = new RandomGenerator(null),
                 Lambda = 4,
-                Separator = new BestSeparator<MKT_Point>()
+                FirstSeparator = new BestSeparator<MKT_Point>(),
+                SecondSeparator = new BestSeparator<MKT_Point>(),
+                IterationMode = MktIterationMode.Full
             };
         }
 
