@@ -32,6 +32,8 @@ namespace OPR.SSGA2
 
         public static int SSGAIterationCount { get; set; }
 
+        public static bool IsTwoCrossingPoints { get; set; }
+
         public static SquarePoint[] GetBounds()
         {
             return new SquarePoint[]

@@ -40,7 +40,7 @@ namespace OPR.SSGA2
 
         public string Code { get { return genom.Code; } }
 
-        public int? CrossPoint { get; set; }
+        public string CrossPoint { get; set; }
 
         public EntityType Type { get; private set; }
 

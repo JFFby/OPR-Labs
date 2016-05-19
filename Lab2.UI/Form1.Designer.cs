@@ -53,6 +53,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.iterationCountTextBox = new System.Windows.Forms.TextBox();
             this.fnTextBox = new System.Windows.Forms.TextBox();
+            this.tpcCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -202,7 +203,7 @@
             this.nTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nTextBox.Location = new System.Drawing.Point(895, 120);
+            this.nTextBox.Location = new System.Drawing.Point(936, 122);
             this.nTextBox.Name = "nTextBox";
             this.nTextBox.Size = new System.Drawing.Size(60, 26);
             this.nTextBox.TabIndex = 14;
@@ -213,7 +214,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(862, 126);
+            this.label6.Location = new System.Drawing.Point(903, 128);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(18, 20);
             this.label6.TabIndex = 13;
@@ -224,7 +225,7 @@
             this.tTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tTextBox.Location = new System.Drawing.Point(1032, 120);
+            this.tTextBox.Location = new System.Drawing.Point(1057, 122);
             this.tTextBox.Name = "tTextBox";
             this.tTextBox.Size = new System.Drawing.Size(60, 26);
             this.tTextBox.TabIndex = 16;
@@ -235,7 +236,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(999, 126);
+            this.label7.Location = new System.Drawing.Point(1024, 128);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(14, 20);
             this.label7.TabIndex = 15;
@@ -268,7 +269,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(646, 36);
+            this.comboBox1.Location = new System.Drawing.Point(646, 44);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(109, 21);
             this.comboBox1.TabIndex = 19;
@@ -280,7 +281,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(642, 59);
+            this.label8.Location = new System.Drawing.Point(643, 67);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(112, 20);
             this.label8.TabIndex = 21;
@@ -291,7 +292,7 @@
             this.iterationCountTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.iterationCountTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.iterationCountTextBox.Location = new System.Drawing.Point(646, 82);
+            this.iterationCountTextBox.Location = new System.Drawing.Point(646, 90);
             this.iterationCountTextBox.Name = "iterationCountTextBox";
             this.iterationCountTextBox.Size = new System.Drawing.Size(60, 26);
             this.iterationCountTextBox.TabIndex = 20;
@@ -303,14 +304,25 @@
             this.fnTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.fnTextBox.Location = new System.Drawing.Point(646, 122);
             this.fnTextBox.Name = "fnTextBox";
-            this.fnTextBox.Size = new System.Drawing.Size(207, 26);
+            this.fnTextBox.Size = new System.Drawing.Size(251, 26);
             this.fnTextBox.TabIndex = 22;
+            // 
+            // tpcCheckBox
+            // 
+            this.tpcCheckBox.AutoSize = true;
+            this.tpcCheckBox.Location = new System.Drawing.Point(761, 12);
+            this.tpcCheckBox.Name = "tpcCheckBox";
+            this.tpcCheckBox.Size = new System.Drawing.Size(47, 17);
+            this.tpcCheckBox.TabIndex = 23;
+            this.tpcCheckBox.Text = "TPC";
+            this.tpcCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1129, 776);
+            this.Controls.Add(this.tpcCheckBox);
             this.Controls.Add(this.fnTextBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.iterationCountTextBox);
@@ -367,6 +379,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox iterationCountTextBox;
         private System.Windows.Forms.TextBox fnTextBox;
+        private System.Windows.Forms.CheckBox tpcCheckBox;
     }
 }
 

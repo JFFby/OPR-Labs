@@ -51,7 +51,7 @@ namespace OPR.KP.SSGA_MKT_Items
             switch (separatorType)
             {
                 case 0:
-                    return new Roulette<MKT_Point>();
+                    return new BestSeparator<MKT_Point>();//new Roulette<MKT_Point>();
                 case 1:
                     return new BestSeparator<MKT_Point>(); //new Tournament<MKT_Point>();
                 case 2:
