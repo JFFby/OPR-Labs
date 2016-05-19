@@ -53,7 +53,7 @@ namespace OPR.KP.SSGA_MKT_Items
                 case 0:
                     return new Roulette<MKT_Point>();
                 case 1:
-                    return new BestSeparator<MKT_Point>(); //new Tournament<MKT_Point>();
+                    return new Tournament<MKT_Point>();
                 case 2:
                     return new Rang<MKT_Point>();
                 case 3:

@@ -15,34 +15,44 @@ namespace OPR.lb2
                 return inpuList;
             }
 
+            bool onMinimum = true;
             float summ = 0, procent = 0;
-            var items = GetRouletteItem(inpuList);
+            var items = GetRouletteItem(inpuList.OrderBy(x => x.Value));
+            var lastItem = inpuList.Max(x => x.Value);
+            var tempList = new float[items.Count];
             int length = items.Count;
-            float[] array = new float[length + 1]; array[0] = 0;
+            float[] array = new float[length+1]; array[0] = 0;
             float[] id = new float[count];
             for (var i = 0; i < count; ++i)
             {
                 id[i] = -1;
             }
 
-            float value = 0;
+            var num = 0;
             foreach (var el in items)
             {
-                summ += el.Entity.Value;
+                tempList[num++] = lastItem - el.Entity.Value;
+            }
+
+            float value = 0;
+            foreach (var number in tempList)
+            {
+                summ += number;
             }
 
             procent = 360 / summ;
+            num = 0;
             foreach (var el in items)
             {
-                value += el.Entity.Value * procent;
+                value += tempList[num++] * procent;
                 array[el.RouletteItemId] = value;
             }
 
-            var num = 0;
+            num = 0;
             for (; num != count;)
             {
                 float sector = (float)Math.Round(RandomHelper.RandomFloat(0, 360), 1);
-                for (var i = 1; i < array.Length; ++i)
+                for (var i = 1; i < array.Length - 1; ++i)
                 {
                     if (array[i - 1] < sector && sector <= array[i])
                     {
@@ -77,7 +87,7 @@ namespace OPR.lb2
         public RouletteItem(TValue entity, int i)
         {
             Entity = entity;
-            RouletteItemId = i;
+            RouletteItemId = i + 1;
         }
 
        public TValue Entity { get; set; }
