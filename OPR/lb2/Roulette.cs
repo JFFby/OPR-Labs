@@ -15,7 +15,6 @@ namespace OPR.lb2
                 return inpuList;
             }
 
-            bool onMinimum = true;
             float summ = 0, procent = 0;
             var items = GetRouletteItem(inpuList.OrderBy(x => x.Value));
             var lastItem = inpuList.Max(x => x.Value);
@@ -23,6 +22,9 @@ namespace OPR.lb2
             int length = items.Count;
             float[] array = new float[length+1]; array[0] = 0;
             float[] id = new float[count];
+            var preLast = items[items.Count - 1];
+
+
             for (var i = 0; i < count; ++i)
             {
                 id[i] = -1;
@@ -31,20 +33,21 @@ namespace OPR.lb2
             var num = 0;
             foreach (var el in items)
             {
-                tempList[num++] = lastItem - el.Entity.Value;
+                var values = lastItem - el.Entity.Value;
+                tempList[num++] = lastItem* 2 - el.Entity.Value;
             }
 
             float value = 0;
             foreach (var number in tempList)
             {
-                summ += number;
+                summ += Math.Abs(number);
             }
 
             procent = 360 / summ;
             num = 0;
             foreach (var el in items)
             {
-                value += tempList[num++] * procent;
+                value += Math.Abs(tempList[num++]) * procent;
                 array[el.RouletteItemId] = value;
             }
 
