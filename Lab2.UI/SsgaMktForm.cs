@@ -186,6 +186,8 @@ namespace Lab2.UI
         private void resultBtn_Click(object sender, EventArgs e)
         {
             var results = logger.ReadResults();
+            var resultForm = new MktResultForm(results);
+            resultForm.Show();
         }
     }
 }
