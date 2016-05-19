@@ -71,10 +71,7 @@ namespace OPR.KP.MKT_Items
 
         public override string ToString()
         {
-            return string.Join("_",
-                GetBoundString(GlobalSettings.LeftXBound, GlobalSettings.RightXBound),
-                GetBoundString(GlobalSettings.BottomYBound, GlobalSettings.TopYBound),
-                Shlp.ShlpType, Generator.GetType().Name, FirstSeparator.GetType().Name,
+            return string.Join("_",Shlp.ShlpType, Generator.GetType().Name, FirstSeparator.GetType().Name,
                 SecondSeparator.GetType().Name, N, n, Lambda, IterationMode);
         }
 

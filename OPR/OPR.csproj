@@ -84,6 +84,7 @@
     <Compile Include="lb2\BinaryGenom.cs" />
     <Compile Include="lb2\Enums\EntityFunction.cs" />
     <Compile Include="lb2\Enums\EntityType.cs" />
+    <Compile Include="lb2\Enums\LogFolders.cs" />
     <Compile Include="lb2\Generation.cs" />
     <Compile Include="lb2\GridPointsHelper.cs" />
     <Compile Include="lb2\Interfaces\Common\IGenerator.cs" />

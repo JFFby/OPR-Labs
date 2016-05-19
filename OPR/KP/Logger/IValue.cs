@@ -6,9 +6,5 @@ namespace OPR.KP.Logger
     public class LogValue
     {
         public float Value { get; set; }
-
-        public float X { get; set; }
-
-        public float Y { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using OPR.KP.Shlp;
 using OPR.KP.Shlp.NelderMid;
 using OPR.KP.SSGA_MKT_Items;
 using OPR.lb1;
+using OPR.lb2.Enums;
 using OPR.SSGA2;
 
 namespace UnitTestProject1
@@ -57,8 +58,8 @@ namespace UnitTestProject1
         public void LogTest()
         {
             var config = CreateConfig(4);
-            var logger = new Logger();
-            logger.Log(config, new LogValue { Value = 1, X = 1, Y = 3 });
+            var logger = new Logger(LogFolders.MktFolder);
+            logger.Log(config, new LogValue { Value = 1});
         }
 
         private MKT_Config CreateConfig(int lambda)

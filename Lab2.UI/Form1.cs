@@ -194,9 +194,9 @@ namespace Lab2.UI
 
         private void InitValues()
         {
-            xs.Text = "-4";
-            xb.Text = "4";
-            ys.Text = "-4";
+            xs.Text = "0";
+            xb.Text = "6";
+            ys.Text = "0";
             yb.Text = "4";
             pNuTextbox.Text = "7";
             TextboxN.Text = "20";

@@ -9,6 +9,11 @@ namespace OPR.lb2
     {
         public IList<TValue> Separate(IList<TValue> inpuList, int count, bool isAscending)
         {
+            if (inpuList.Count <= count)
+            {
+                return inpuList;
+            }
+
             int currentCount = count;
             int listCount = inpuList.Count;
             IList<TValue> tournament = new List<TValue>();

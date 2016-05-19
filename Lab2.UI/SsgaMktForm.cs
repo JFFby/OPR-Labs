@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using MKT.UI;
+using OPR.KP.Logger;
 using OPR.KP.MKT_Items;
 using OPR.KP.Shlp;
 using OPR.KP.Shlp.NelderMid;
 using OPR.KP.SSGA_MKT_Items;
 using OPR.lb2;
+using OPR.lb2.Enums;
 using OPR.lb2.Interfaces.Common;
 using OPR.SSGA2;
 using OPR.SSGA2.Italik;
@@ -18,12 +20,15 @@ namespace Lab2.UI
     public partial class SsgaMktForm : Form
     {
         private readonly MktSsga ssga;
+        private readonly Logger logger;
+
         private IList<MktGeneration> generations;
         private int completedIterationCount = 0;
         private bool isFirstStep = true;
         private Dictionary<string, IGenerator<MKT_Point>> generators;
         private Dictionary<string, ISeparator<MKT_Point>> separators;
         private Dictionary<string, Func<MktIterationMode, IShlpWrapper>> shlpWrappers;
+        private string bestSeparatorName;
 
         public SsgaMktForm(MktSsga ssga)
         {
@@ -33,6 +38,7 @@ namespace Lab2.UI
             KeyPreview = true;
             WindowState = FormWindowState.Maximized;
             InitializeComponents();
+            logger = new Logger(LogFolders.MktFolder);
         }
 
         private void InitializeComponents()
@@ -57,9 +63,10 @@ namespace Lab2.UI
             var roulette = new Roulette<MKT_Point>();
             var tournament = new Tournament<MKT_Point>();
             var rang = new Rang<MKT_Point>();
+            bestSeparatorName = bestSeparator.GetType().Name;
             separators = new Dictionary<string, ISeparator<MKT_Point>>
             {
-                {bestSeparator.GetType().Name, bestSeparator},
+                {bestSeparatorName, bestSeparator},
                 {roulette.GetType().Name, roulette},
                 {tournament.GetType().Name, tournament},
                 {rang.GetType().Name, rang}
@@ -125,7 +132,7 @@ namespace Lab2.UI
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var row = dataGridView1.Rows[e.RowIndex];
-            var iterationMode = (MktIterationMode)Enum.Parse(typeof (MktIterationMode), row.Cells[6].Value.ToString());
+            var iterationMode = (MktIterationMode)Enum.Parse(typeof(MktIterationMode), row.Cells[6].Value.ToString());
             var config = new MKT_Config
             {
                 N = int.Parse(row.Cells[1].Value.ToString()),
@@ -170,10 +177,15 @@ namespace Lab2.UI
             if ((e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
                 && completedIterationCount == GlobalSettings.SSGAIterationCount)
             {
-                {
-                    MessageBox.Show(completedIterationCount.ToString());
-                }
+                var winner = new BestSeparator<Entity<MktValueService, MktGenom>>()
+                    .Separate(generations.Last().Entites, 1, true).First();
+                logger.Log(winner.Args, new LogValue { Value = winner.Value });
             }
+        }
+
+        private void resultBtn_Click(object sender, EventArgs e)
+        {
+            var results = logger.ReadResults();
         }
     }
 }

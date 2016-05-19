@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using Newtonsoft.Json;
 
 namespace OPR.KP.Logger
 {
     public sealed class Logger
     {
-        private const string LogFolder = @"log\";
+        private readonly string LogFolder;
+
+        public Logger(string folder)
+        {
+            LogFolder = folder;
+        }
 
         public void Log(object key, LogValue value)
         {
@@ -15,6 +21,21 @@ namespace OPR.KP.Logger
             var content = JsonConvert.SerializeObject(serializedObject);
             File.WriteAllText(Path(key), content);
         }
+
+        public Dictionary<string, List<LogValue>> ReadResults()
+        {
+            var files = Directory.GetFiles(LogFolder);
+            var result = new Dictionary<string, List<LogValue>>();
+            foreach (var file in files)
+            { 
+                //Dictionary<string, List<LogValue>>
+                var config = JsonConvert
+                    .DeserializeObject<KeyValuePair<string, List<LogValue>>>(File.ReadAllText(file));
+                result.Add(config.Key, config.Value);
+            }
+
+            return result;
+        } 
 
         private Dictionary<string, List<LogValue>> GetValueToSerialize(object key, LogValue value)
         {
