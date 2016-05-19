@@ -35,7 +35,7 @@ namespace Lab2.UI
                     foreach (var group in groups)
                     {
                         DrawLineChildrenSeparator(GetGroupMsg(group.Key,
-                            binaryGeneration.GetChilrensCrossingPoint().ToString()), dataGridView1);
+                            binaryGeneration.GetChilrensCrossingPoint()), dataGridView1);
                         foreach (var item in group)
                         {
                             createRow(item);

@@ -34,10 +34,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod3()
         {
-            var config = new MKT_Config ();
+            var config = new MKT_Config();
             var method = typeof(MKT_Config).GetMethod("GetSeparatorInteger",
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            var value = method.Invoke(config, new object[] { new Roulette<MKT_Point>()});
+            var value = method.Invoke(config, new object[] { new Roulette<MKT_Point>() });
             Assert.AreEqual((int)SeparatorType.Roulette, value);
         }
 
@@ -47,14 +47,14 @@ namespace UnitTestProject1
             var config = new MKT_Config();
             var method = typeof(MKT_Config).GetMethod("GetSeparatorInteger",
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            var value = method.Invoke(config, new object[] { new Rang<MKT_Point>(),  });
+            var value = method.Invoke(config, new object[] { new Rang<MKT_Point>(), });
             Assert.AreEqual((int)SeparatorType.Rang, value);
         }
 
         [TestMethod]
         public void Test4()
         {
-            SeparatorType? type = (SeparatorType) 17;
+            SeparatorType? type = (SeparatorType)17;
             Assert.IsNotNull(type);
         }
 
@@ -72,6 +72,18 @@ namespace UnitTestProject1
                 var config2 = mktChromosome.CodeToEntityArgs(code);
                 Assert.AreEqual(config.ToString(), config2.Args.ToString());
             }
+        }
+
+        [TestMethod]
+        public void Test6()
+        {
+            var code = new int[] { 22, 9, 0, 2, 1, 1, 0, 6 };
+            var code2 = new int[] { 13, 5, 1, 1, 0, 0, 1, 4 };
+            var genom = new MktGenom();
+            var method = genom.GetType().GetMethod("TpCroosCode",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+
+            var result = (int[]) method.Invoke(genom, new[] {code, code2, (object) 1, 7 });
         }
     }
 }

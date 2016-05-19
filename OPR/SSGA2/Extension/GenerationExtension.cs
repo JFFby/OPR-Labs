@@ -32,11 +32,11 @@ namespace OPR.SSGA2.Extension
             return new Generation<TValueService, TGenom>(entities.ToList(), false).MarkUpGenereation(separator);
         }
 
-        public static int GetChilrensCrossingPoint<TValueService, TGenom>(this Generation<TValueService, TGenom> generation)
+        public static string GetChilrensCrossingPoint<TValueService, TGenom>(this Generation<TValueService, TGenom> generation)
            where TValueService : IValueService, new() where TGenom : IGenom, new()
         {
             var firstchild = generation.Children.FirstOrDefault();
-            return firstchild != null && firstchild.CrossPoint.HasValue ? -firstchild.CrossPoint.Value : -1;
+            return firstchild != null && !string.IsNullOrEmpty(firstchild.CrossPoint) ? firstchild.CrossPoint : string.Empty;
         }
 
         public static List<Entity<TValueService, TGenom>> SetIds<TValueService, TGenom>(this List<Entity<TValueService, TGenom>> entites)

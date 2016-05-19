@@ -105,6 +105,7 @@ namespace Lab2.UI
             GlobalSettings.MutationChance = int.Parse(pNuTextbox.Text);
             GlobalSettings.nFromN = int.Parse(nTextBox.Text);
             GlobalSettings.SSGAIterationCount = int.Parse(iterationCountTextBox.Text) + 1;
+            GlobalSettings.IsTwoCrossingPoints = tpcCheckBox.Checked;
             GetBounds();
         }
 
