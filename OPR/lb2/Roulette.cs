@@ -54,7 +54,7 @@ namespace OPR.lb2
             num = 0;
             for (; num != count;)
             {
-                float sector = (float)Math.Round(RandomHelper.RandomFloat(0, 360), 4);
+                float sector = (float)Math.Round(RandomHelper.RandomFloat(0, 360), 8);
                 for (var i = 1; i < array.Length - 1; ++i)
                 {
                     if (array[i - 1] < sector && sector <= array[i])
