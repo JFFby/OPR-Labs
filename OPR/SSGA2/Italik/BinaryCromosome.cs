@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using OPR.SSGA2.Extension;
 using OPR.SSGA2.Interfaces;
+using System.Globalization;
 
 namespace OPR.SSGA2.Italik
 {
@@ -102,7 +103,7 @@ namespace OPR.SSGA2.Italik
 
             var stringValue = string.Format("{0}{1},{2}", signValue,
                 integerValue.ToString(), fractionValue.ToString());
-            return (float)Decimal.Parse(stringValue);
+            return (float)Decimal.Parse(stringValue, new CultureInfo("ru-Ru"));
         }
 
         private List<int> ConvertFloatToCodePart(float value)
