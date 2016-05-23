@@ -43,14 +43,14 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(529, 711);
+            this.dataGridView1.Size = new System.Drawing.Size(719, 711);
             this.dataGridView1.TabIndex = 0;
             // 
             // MktResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 735);
+            this.ClientSize = new System.Drawing.Size(742, 735);
             this.Controls.Add(this.dataGridView1);
             this.Name = "MktResultForm";
             this.Text = "MktResultForm";

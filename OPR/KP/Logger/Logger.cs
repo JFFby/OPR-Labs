@@ -30,8 +30,12 @@ namespace OPR.KP.Logger
             { 
                 //Dictionary<string, List<LogValue>>
                 var config = JsonConvert
-                    .DeserializeObject<KeyValuePair<string, List<LogValue>>>(File.ReadAllText(file));
-                result.Add(config.Key, config.Value);
+                    .DeserializeObject<Dictionary<string, List<LogValue>>>(File.ReadAllText(file));
+
+                foreach (var key in config.Keys)
+                {
+                    result.Add(key, config[key]);
+                }
             }
 
             return result;
